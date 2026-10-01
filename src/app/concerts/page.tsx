@@ -9,7 +9,7 @@ export default function ConcertsPage() {
   return (
     <>
       <PageIntro title={concerts.title} meta={concerts.years} />
-      <Gallery photos={concerts.photos} variant="dense" />
+      <Gallery photos={concerts.photos} />
     </>
   );
 }

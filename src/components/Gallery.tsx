@@ -4,55 +4,16 @@ import { useCallback, useId, useState } from "react";
 import { flushSync } from "react-dom";
 import DevelopingImage from "@/components/DevelopingImage";
 import Lightbox from "@/components/Lightbox";
-import type { GalleryVariant, Photo } from "@/lib/content";
+import type { Photo } from "@/lib/content";
 import { withViewTransition } from "@/lib/viewTransition";
 
 type Props = {
   photos: Photo[];
-  /**
-   * "loose": small photos of varied widths at staggered heights, like prints laid on a table.
-   * "dense": tight masonry with more columns, for high-energy sets.
-   */
-  variant?: GalleryVariant;
   /** Load the first images eagerly (use for the gallery at the top of a page). */
   eager?: boolean;
 };
 
-// "loose" places each photo on a grid with its own column, width and drop, cycling through
-// a short irregular rhythm per breakpoint (2 columns on phones, 6 on tablets, 12 on desktop).
-// Photos still read in order, left to right, row by row.
-const loosePhone = ["", "mt-6"];
-const looseTablet = [
-  "sm:col-start-1 sm:col-span-3 sm:mt-0",
-  "sm:col-start-4 sm:col-span-3 sm:mt-8",
-  "sm:col-start-1 sm:col-span-2 sm:mt-3",
-  "sm:col-start-3 sm:col-span-4 sm:mt-0",
-];
-const looseDesktop = [
-  "lg:col-start-1 lg:col-span-4 lg:mt-0",
-  "lg:col-start-5 lg:col-span-3 lg:mt-8",
-  "lg:col-start-9 lg:col-span-4 lg:mt-3",
-  "lg:col-start-1 lg:col-span-3 lg:mt-5",
-  "lg:col-start-4 lg:col-span-5 lg:mt-0",
-  "lg:col-start-9 lg:col-span-3 lg:mt-10",
-];
-
-const layouts: Record<GalleryVariant, string> = {
-  loose: "grid grid-cols-2 items-start gap-x-3 gap-y-4 sm:grid-cols-6 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-12",
-  dense: "columns-1 gap-2 sm:columns-2 lg:columns-3 [&>figure]:mb-2",
-};
-
-const sizes: Record<GalleryVariant, string> = {
-  loose: "(min-width: 1024px) 42vw, 50vw",
-  dense: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
-};
-
-const placement = (variant: GalleryVariant, i: number) =>
-  variant === "loose"
-    ? `${loosePhone[i % loosePhone.length]} ${looseTablet[i % looseTablet.length]} ${looseDesktop[i % looseDesktop.length]}`
-    : "break-inside-avoid";
-
-export default function Gallery({ photos, variant = "loose", eager = false }: Props) {
+export default function Gallery({ photos, eager = false }: Props) {
   const [open, setOpen] = useState<number | null>(null);
   // The photo that morphs to/from full screen. Only one element may carry the name at a
   // time: the grid photo while closed, the full-screen photo while open.
@@ -77,10 +38,11 @@ export default function Gallery({ photos, variant = "loose", eager = false }: Pr
 
   return (
     <>
-      <div className={layouts[variant]}>
+      {/* Simple masonry: even columns, photos at their natural heights. */}
+      <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [&>figure]:mb-3">
         {photos.map((photo, i) => (
           // Each photo opens like a shutter as it scrolls in, then develops (see globals.css).
-          <figure key={photo.src ?? i} id={`${morphName}-${i}`} className={`shutter ${placement(variant, i)}`}>
+          <figure key={photo.src ?? i} id={`${morphName}-${i}`} className="shutter break-inside-avoid">
             {photo.src ? (
               <button
                 type="button"
@@ -93,7 +55,7 @@ export default function Gallery({ photos, variant = "loose", eager = false }: Pr
                   alt={photo.alt}
                   width={photo.width}
                   height={photo.height}
-                  sizes={sizes[variant]}
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
                   quality={90}
                   {...(eager && i < 3 && { loading: "eager", fetchPriority: "high" })}
                   className="h-auto w-full"
