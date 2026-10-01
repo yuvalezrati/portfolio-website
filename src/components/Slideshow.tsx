@@ -205,7 +205,7 @@ export default function Slideshow({ photos }: Props) {
         </div>
       )}
 
-      <div className="mt-6 flex items-baseline gap-6 font-mono text-xs uppercase tracking-wider">
+      <div className="mt-6 flex items-baseline gap-4 whitespace-nowrap font-mono text-xs uppercase tracking-wider sm:gap-6">
         <p aria-live="polite" className="tabular-nums">
           <span
             key={index}
@@ -215,14 +215,14 @@ export default function Slideshow({ photos }: Props) {
           </span>
           <span className="text-ink/40"> / {pad(count)}</span>
         </p>
-        <div className="ml-auto flex gap-6">
+        <div className="ml-auto flex gap-5 sm:gap-6">
           {!showIndex && count > 1 && (
             <>
-              <button type="button" onClick={() => go(-1)} className="text-ink/45 hover:text-ink">
-                ← Prev
+              <button type="button" onClick={() => go(-1)} aria-label="Previous" className="text-ink/45 hover:text-ink">
+                ← <span className="hidden sm:inline">Prev</span>
               </button>
-              <button type="button" onClick={() => go(1)} className="text-ink/45 hover:text-ink">
-                Next →
+              <button type="button" onClick={() => go(1)} aria-label="Next" className="text-ink/45 hover:text-ink">
+                <span className="hidden sm:inline">Next</span> →
               </button>
             </>
           )}
