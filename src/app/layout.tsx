@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col text-left font-sans">
         <SiteHeader />
         <main className="flex-1 px-6 pb-24 pt-8 sm:px-10">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import type { Photo } from "@/lib/content";
-import Scribble from "./Scribble";
+import DevelopingImage from "./DevelopingImage";
 
 type Props = {
   photos: Photo[];
@@ -32,6 +32,9 @@ export default function Slideshow({ photos }: Props) {
   const [showIndex, setShowIndex] = useState(false);
   const pointerStart = useRef<number | null>(null);
   const swiped = useRef(false);
+  // Desktop: a little red tag follows the cursor over the photo ("Next → 04A").
+  const cursorTag = useRef<HTMLSpanElement>(null);
+  const [cursorSide, setCursorSide] = useState<"prev" | "next" | null>(null);
   // The current photo carries this name in both views, so it morphs between them.
   const morphName = `photo-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const count = photos.length;
@@ -77,7 +80,7 @@ export default function Slideshow({ photos }: Props) {
                 className="group block w-full"
               >
                 <span className="flex aspect-square items-end">
-                  {/* Sized to the photo itself, so the pencil circle hugs the image, not the cell. */}
+                  {/* Sized to the photo itself (keeps the morph to/from the slide undistorted). */}
                   <span
                     className={`relative block ${photo.width >= photo.height ? "w-full" : "h-full"}`}
                     style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
@@ -88,19 +91,11 @@ export default function Slideshow({ photos }: Props) {
                         alt={photo.alt}
                         fill
                         sizes="(min-width: 1024px) 16vw, (min-width: 640px) 25vw, 33vw"
-                        className="object-cover"
+                        className={`object-cover transition-opacity ${i === index ? "" : "opacity-55 group-hover:opacity-100"}`}
                         style={i === index ? { viewTransitionName: morphName } : undefined}
                       />
                     ) : (
                       <span className="absolute inset-0 bg-neutral-700" />
-                    )}
-                    {i === index ? (
-                      <Scribble shape="circle" className="-inset-3" />
-                    ) : (
-                      // Remounts on hover (display toggles), so the circle is drawn fresh each time.
-                      <span className="hidden group-hover:block group-focus-visible:block">
-                        <Scribble shape="circle" className="-inset-3" />
-                      </span>
                     )}
                   </span>
                 </span>
@@ -123,6 +118,18 @@ export default function Slideshow({ photos }: Props) {
             pointerStart.current = e.clientX;
             swiped.current = false;
           }}
+          onPointerMove={(e) => {
+            if (e.pointerType !== "mouse" || count < 2) return;
+            const box = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - box.left;
+            const y = e.clientY - box.top;
+            if (cursorTag.current) {
+              cursorTag.current.style.transform = `translate(${x + 14}px, ${y + 14}px)`;
+            }
+            const side = x < box.width / 2 ? "prev" : "next";
+            if (side !== cursorSide) setCursorSide(side);
+          }}
+          onPointerLeave={() => setCursorSide(null)}
           onPointerUp={(e) => {
             if (pointerStart.current === null) return;
             const dx = e.clientX - pointerStart.current;
@@ -143,7 +150,7 @@ export default function Slideshow({ photos }: Props) {
                 }`}
               >
                 {photo.src ? (
-                  <Image
+                  <DevelopingImage
                     src={photo.src}
                     alt={photo.alt}
                     width={photo.width}
@@ -174,14 +181,25 @@ export default function Slideshow({ photos }: Props) {
                 type="button"
                 aria-label="Previous photograph"
                 onClick={() => !swiped.current && go(-1)}
-                className="absolute inset-y-0 left-0 w-1/2 cursor-w-resize focus-visible:outline-none"
+                className="absolute inset-y-0 left-0 w-1/2 cursor-w-resize focus-visible:outline-none [@media(pointer:fine)]:cursor-none"
               />
               <button
                 type="button"
                 aria-label="Next photograph"
                 onClick={() => !swiped.current && go(1)}
-                className="absolute inset-y-0 right-0 w-1/2 cursor-e-resize focus-visible:outline-none"
+                className="absolute inset-y-0 right-0 w-1/2 cursor-e-resize focus-visible:outline-none [@media(pointer:fine)]:cursor-none"
               />
+              <span
+                ref={cursorTag}
+                aria-hidden
+                className={`pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap bg-mark px-2 py-1 font-mono text-[11px] uppercase tracking-wider text-paper transition-opacity duration-150 ${
+                  cursorSide ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                {cursorSide === "prev"
+                  ? `← Prev ${pad(((index - 1 + count) % count) + 1)}A`
+                  : `Next → ${pad(((index + 1) % count) + 1)}A`}
+              </span>
             </>
           )}
         </div>
@@ -189,7 +207,12 @@ export default function Slideshow({ photos }: Props) {
 
       <div className="mt-6 flex items-baseline gap-6 font-mono text-xs uppercase tracking-wider">
         <p aria-live="polite" className="tabular-nums">
-          <span className="text-mark">{pad(index + 1)}</span>
+          <span
+            key={index}
+            className="inline-block animate-[roll_0.35s_cubic-bezier(0.2,0.7,0.1,1)_both] text-mark"
+          >
+            {pad(index + 1)}
+          </span>
           <span className="text-ink/40"> / {pad(count)}</span>
         </p>
         <div className="ml-auto flex gap-6">

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import DevelopingImage from "@/components/DevelopingImage";
 import Link from "next/link";
 import Scribble from "@/components/Scribble";
 import { artProjects } from "@/lib/content";
@@ -26,7 +27,7 @@ export default function ProjectShowcase() {
                 }`}
               >
                 {cover?.src && (
-                  <Image
+                  <DevelopingImage
                     src={cover.src}
                     alt=""
                     fill

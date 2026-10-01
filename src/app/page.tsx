@@ -5,12 +5,7 @@ import { concerts } from "@/lib/content";
 export default function Home() {
   return (
     <div>
-      <p className="max-w-3xl font-serif text-5xl leading-[1.02] sm:text-7xl">
-        Photographs of places that <em>insist</em> on staying beautiful
-        <span className="text-mark">.</span>
-      </p>
-
-      <section className="mt-24">
+      <section>
         <h2 className="mb-10 font-mono text-xs uppercase tracking-wider text-ink/50">
           Selected projects
         </h2>
