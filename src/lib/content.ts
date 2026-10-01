@@ -6,7 +6,7 @@ export type Photo = {
   alt: string;
 };
 
-export type GalleryVariant = "book" | "dense";
+export type GalleryVariant = "loose" | "dense";
 
 export type ProjectSection = {
   /** Section heading, e.g. "Installation". Omit for the main body of work. */

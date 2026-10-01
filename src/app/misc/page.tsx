@@ -11,7 +11,7 @@ export default function MiscPage() {
       <PageIntro title={misc.title}>
         <p>{misc.description}</p>
       </PageIntro>
-      <Gallery photos={misc.photos} variant="book" />
+      <Gallery photos={misc.photos} />
     </>
   );
 }
