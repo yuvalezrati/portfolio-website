@@ -116,9 +116,9 @@ export default function CvPage() {
   return (
     <div className="max-w-3xl">
       <header className="mb-16">
-        <h1 className="font-serif text-5xl italic tracking-tight sm:text-6xl">Yuval Ezrati</h1>
-        <p className="mt-2 font-mono text-xs text-ink/50">Born 1997, Tel Aviv, Israel</p>
-        <p className="mt-6 max-w-xl font-serif text-2xl leading-snug">
+        <h1 className="sr-only">CV</h1>
+        <p className="font-mono text-xs text-ink/50">Born 1997, Tel Aviv, Israel</p>
+        <p className="mt-4 max-w-xl font-serif text-3xl leading-snug sm:text-4xl">
           Interdisciplinary artist with a background in photography, fine arts and computer
           science.
         </p>

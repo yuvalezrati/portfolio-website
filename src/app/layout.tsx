@@ -33,6 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${sans.variable} ${mono.variable} ${serif.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col text-left font-sans">
+        <div aria-hidden className="scroll-progress" />
         <SiteHeader />
         <main className="flex-1 px-6 pb-24 pt-8 sm:px-10">{children}</main>
         <SiteFooter />

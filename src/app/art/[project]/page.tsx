@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProjectSlideshows from "@/components/ProjectSlideshows";
+import { PageTone } from "@/components/Tone";
 import { artProjects, getArtProject } from "@/lib/content";
 
 // Only the projects listed in content.ts exist; anything else 404s.
@@ -28,6 +29,7 @@ export default async function ArtProjectPage({ params }: PageProps<"/art/[projec
 
   return (
     <>
+      <PageTone tone={data.tone} />
       <div className="mb-6 flex flex-wrap items-baseline gap-x-6 gap-y-1">
         <Link href="/art" className="font-mono text-xs uppercase tracking-wider text-ink/45 hover:text-ink">
           ← Art

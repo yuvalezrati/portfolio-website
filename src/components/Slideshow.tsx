@@ -63,7 +63,7 @@ export default function Slideshow({ photos }: Props) {
   return (
     <div>
       {showIndex ? (
-        <ol className="grid grid-cols-3 gap-x-4 gap-y-6 bg-ink p-4 sm:grid-cols-4 sm:p-6 lg:grid-cols-6">
+        <ol className="grid grid-cols-3 gap-x-4 gap-y-6 bg-[#161616] p-4 sm:grid-cols-4 sm:p-6 lg:grid-cols-6">
           {photos.map((photo, i) => (
             <li
               key={photo.src ?? i}
@@ -145,7 +145,7 @@ export default function Slideshow({ photos }: Props) {
               <div
                 key={photo.src ?? i}
                 aria-hidden={i !== index}
-                className={`absolute inset-0 flex items-center transition-opacity duration-500 ease-out ${
+                className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ease-out ${
                   i === index ? "opacity-100" : "opacity-0"
                 }`}
               >
@@ -192,7 +192,7 @@ export default function Slideshow({ photos }: Props) {
               <span
                 ref={cursorTag}
                 aria-hidden
-                className={`pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap bg-mark px-2 py-1 font-mono text-[11px] uppercase tracking-wider text-paper transition-opacity duration-150 ${
+                className={`pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap bg-mark px-2 py-1 font-mono text-[11px] uppercase tracking-wider text-white transition-opacity duration-150 ${
                   cursorSide ? "opacity-100" : "opacity-0"
                 }`}
               >
