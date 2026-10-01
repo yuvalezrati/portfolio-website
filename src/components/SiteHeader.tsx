@@ -5,13 +5,16 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Scribble from "@/components/Scribble";
 import { navigation } from "@/lib/content";
+import { getDictionary, localePath, splitLocalePath, type Locale } from "@/lib/i18n";
 
 // Ignore tiny scroll jitters; always show the header near the top of the page.
 const SCROLL_DELTA = 6;
 const ALWAYS_SHOWN_ABOVE = 120;
 
-export default function SiteHeader() {
-  const pathname = usePathname();
+export default function SiteHeader({ lang }: { lang: Locale }) {
+  const t = getDictionary(lang);
+  // The page's path without its language prefix, e.g. "/art/sde-dov".
+  const { path } = splitLocalePath(usePathname());
   // Tucked away while scrolling down; slides back (name rising into place) on scroll up.
   const [tucked, setTucked] = useState(false);
 
@@ -33,30 +36,40 @@ export default function SiteHeader() {
         tucked ? "-translate-y-full" : ""
       }`}
     >
-      <Link href="/" className="font-display text-2xl tracking-tight">
+      <Link href={localePath(lang, "/")} className="font-display text-2xl tracking-tight">
         <span
           className={`inline-block transition-[translate,opacity] delay-100 duration-500 ease-out motion-reduce:transition-none ${
             tucked ? "translate-y-4 opacity-0" : ""
           }`}
         >
-          Yuval Ezrati
+          {t.name}
         </span>
       </Link>
       <nav className="flex gap-6 font-mono text-xs uppercase tracking-wider">
-        {navigation.map(({ href, label }) => {
-          const active = pathname === href || pathname.startsWith(`${href}/`);
+        {navigation.map(({ href, key }) => {
+          const active = path === href || path.startsWith(`${href}/`);
           return (
             <Link
               key={href}
-              href={href}
+              href={localePath(lang, href)}
               aria-current={active ? "page" : undefined}
               className={`relative ${active ? "" : "text-ink/45 transition-colors hover:text-ink"}`}
             >
-              {label}
-              {active && <Scribble key={pathname} shape="underline" className="-bottom-2 left-0 h-2 w-full" />}
+              {t.nav[key]}
+              {active && <Scribble key={path} shape="underline" className="-bottom-2 start-0 h-2 w-full" />}
             </Link>
           );
         })}
+        {/* Same page in the other language. A plain <a> (full page load), since the whole
+            document switches language and direction (lang/dir on <html>). */}
+        <a
+          href={localePath(t.switchTo.lang, path)}
+          hrefLang={t.switchTo.lang}
+          lang={t.switchTo.lang}
+          className="text-mark normal-case tracking-normal hover:text-ink"
+        >
+          {t.switchTo.label}
+        </a>
       </nav>
     </header>
   );

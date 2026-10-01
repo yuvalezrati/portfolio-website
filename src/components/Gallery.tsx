@@ -5,15 +5,18 @@ import { flushSync } from "react-dom";
 import DevelopingImage from "@/components/DevelopingImage";
 import Lightbox from "@/components/Lightbox";
 import type { Photo } from "@/lib/content";
+import { getDictionary, type Locale } from "@/lib/i18n";
 import { withViewTransition } from "@/lib/viewTransition";
 
 type Props = {
   photos: Photo[];
+  lang: Locale;
   /** Load the first images eagerly (use for the gallery at the top of a page). */
   eager?: boolean;
 };
 
-export default function Gallery({ photos, eager = false }: Props) {
+export default function Gallery({ photos, lang, eager = false }: Props) {
+  const t = getDictionary(lang);
   const [open, setOpen] = useState<number | null>(null);
   // The photo that morphs to/from full screen. Only one element may carry the name at a
   // time: the grid photo while closed, the full-screen photo while open.
@@ -47,7 +50,7 @@ export default function Gallery({ photos, eager = false }: Props) {
               <button
                 type="button"
                 onClick={() => openAt(i)}
-                aria-label={`View full screen: ${photo.alt}`}
+                aria-label={`${t.lightbox.open} ${photo.alt}`}
                 className="block w-full cursor-zoom-in"
               >
                 <DevelopingImage
@@ -75,7 +78,7 @@ export default function Gallery({ photos, eager = false }: Props) {
       </div>
 
       {open !== null && (
-        <Lightbox photos={photos} index={open} onIndex={setOpen} onClose={close} morphName={morphName} />
+        <Lightbox photos={photos} index={open} onIndex={setOpen} onClose={close} morphName={morphName} lang={lang} />
       )}
     </>
   );

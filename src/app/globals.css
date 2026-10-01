@@ -12,9 +12,15 @@
   --color-ink: var(--foreground);
   --color-paper: var(--background);
   --color-mark: var(--mark);
-  --font-sans: var(--font-bricolage);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-bricolage);
+  /* Heebo supplies the Hebrew letters (Bricolage and Geist Mono have none). The families
+     are named directly rather than via the next/font variables, because each variable also
+     lists Next's size-matched fallback (a local Arial covering every character), which
+     would grab Hebrew letters before Heebo. Fallbacks go last, for the moment while the
+     web fonts load. Family names are the ones set in [lang]/layout.tsx. */
+  --font-sans:
+    "Bricolage Grotesque", "Heebo", "Bricolage Grotesque Fallback", "Heebo Fallback", sans-serif;
+  --font-mono: "Geist Mono", "Heebo", "Geist Mono Fallback", "Heebo Fallback", monospace;
+  --font-display: var(--font-sans);
 }
 
 /* Names and titles: the same family, heavier and tighter. Base layer, so utilities can override. */
@@ -53,6 +59,11 @@ body {
   pointer-events: none;
 }
 
+/* Right-to-left (Hebrew): the line fills from the right. */
+[dir="rtl"] .scroll-progress {
+  transform-origin: 100% 50%;
+}
+
 @keyframes progress {
   to { transform: scaleX(1); }
 }
@@ -82,6 +93,15 @@ body {
       animation: drift linear both;
       animation-timeline: view();
     }
+
+    /* Mirrored for right-to-left (Hebrew). */
+    [dir="rtl"] .shutter {
+      animation-name: shutter-rtl;
+    }
+
+    [dir="rtl"] .drift {
+      animation-name: drift-rtl;
+    }
   }
 }
 
@@ -100,11 +120,27 @@ body {
   to { translate: -2vw 0; }
 }
 
-/* Project rule (CLAUDE.md): all text is left-aligned. Unlayered + !important so no utility can override it. */
+@keyframes shutter-rtl {
+  from { clip-path: inset(16% 0 16% 12%); }
+  to { clip-path: inset(0); }
+}
+
+@keyframes drift-rtl {
+  from { translate: -4vw 0; }
+  to { translate: 2vw 0; }
+}
+
+/* Project rule (CLAUDE.md): all text is aligned to the start of the line: left in English,
+   right in Hebrew. Unlayered + !important so no utility can override it. */
 *,
 *::before,
 *::after {
-  text-align: left !important;
+  text-align: start !important;
+}
+
+/* Hebrew isn't letter-spaced: drop the tracking used for the English labels and titles. */
+:lang(he) {
+  letter-spacing: normal !important;
 }
 
 /* Grease-pencil marks draw on (see Scribble.tsx). */

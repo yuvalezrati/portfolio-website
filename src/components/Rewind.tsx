@@ -1,6 +1,6 @@
 "use client";
 
-export default function Rewind() {
+export default function Rewind({ label }: { label: string }) {
   return (
     <button
       type="button"
@@ -10,7 +10,7 @@ export default function Rewind() {
       }}
       className="group inline-flex items-baseline gap-2 uppercase hover:text-ink"
     >
-      Rewind
+      {label}
       <span className="text-mark transition-transform group-hover:-translate-y-0.5">↑</span>
     </button>
   );

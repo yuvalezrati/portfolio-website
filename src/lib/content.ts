@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/i18n";
+
 export type Photo = {
   /** Path under /public, e.g. "/photos/concerts/01.jpg". Omit to render a placeholder frame. */
   src?: string;
@@ -15,6 +17,8 @@ export type ProjectSection = {
 export type ArtProject = {
   slug: string;
   title: string;
+  /** Hebrew versions of the texts (the /he site). */
+  he?: { title: string; description?: string; meta?: string };
   year?: string;
   meta?: string;
   description?: string;
@@ -64,6 +68,13 @@ export const artProjects: ArtProject[] = [
   {
     slug: "anti-potential",
     title: "Anti-Potential",
+    he: {
+      title: "אנטי־פוטנציאל",
+      // From the book's colophon.
+      description:
+        "העבודות בספר זה צולמו במהלך 2025—2026 בין הוספיס בתל השומר, סביבת בית החולים שיבא, רמת גן, גבעתיים ואילת, בתי עלמין ושיטוט בסביבת הבית והשכונה. חיים, מחשבה והתבוננות בצל מחלה כרונית. תיעוד של מקומות המתעקשים לשמר יופי וחסד, והנכחה גופנית אישית בתוכם.",
+      meta: "פרויקט גמר, המחלקה לצילום, בצלאל אקדמיה לאמנות ועיצוב, ירושלים. בהנחיית שרון יערי.",
+    },
     year: "2026",
     meta: "Final project, Department of Photography, Bezalel Academy of Arts and Design. Supervised by Sharon Yaari.",
     description:
@@ -114,6 +125,7 @@ export const artProjects: ArtProject[] = [
   {
     slug: "sde-dov",
     title: "Sde Dov",
+    he: { title: "שדה דב" },
     sections: [
       {
         photos: photoSet("sde-dov", [
@@ -134,6 +146,7 @@ export const artProjects: ArtProject[] = [
   {
     slug: "city-of-the-dead",
     title: "City of the Dead",
+    he: { title: "עיר המתים" },
     sections: [
       {
         photos: photoSet("city-of-the-dead", [
@@ -161,21 +174,32 @@ export const artProjects: ArtProject[] = [
 export const getArtProject = (slug: string) =>
   artProjects.find((p) => p.slug === slug);
 
+/**
+ * A project's texts in the given language. The title falls back to English; an
+ * untranslated statement is left out rather than shown in English on the Hebrew site.
+ */
+export const projectText = (project: ArtProject, lang: Locale) => {
+  const he = lang === "he" ? project.he : undefined;
+  return {
+    title: he?.title ?? project.title,
+    description: he ? he.description : project.description,
+    meta: he ? he.meta : project.meta,
+  };
+};
+
 export const concerts = {
-  title: "Concerts",
   years: "2017–2019",
   photos: placeholders([...mixed, ...mixed], "Concert"),
 };
 
 export const misc = {
-  title: "Misc",
-  description: "Other medium-format analog work.",
   photos: placeholders(mediumFormat, "Misc"),
 };
 
+/** Site sections; labels come from the dictionary (src/lib/i18n.ts). */
 export const navigation = [
-  { href: "/art", label: "Art" },
-  { href: "/concerts", label: "Concerts" },
-  { href: "/misc", label: "Misc" },
-  { href: "/cv", label: "CV" },
+  { href: "/art", key: "art" },
+  { href: "/concerts", key: "concerts" },
+  { href: "/misc", key: "misc" },
+  { href: "/cv", key: "cv" },
 ] as const;

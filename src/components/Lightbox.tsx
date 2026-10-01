@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import DevelopingImage from "@/components/DevelopingImage";
 import type { Photo } from "@/lib/content";
+import { direction, getDictionary, type Locale } from "@/lib/i18n";
 
 type Props = {
   photos: Photo[];
@@ -11,12 +12,17 @@ type Props = {
   onClose: () => void;
   /** Shared view-transition name, so the photo morphs between grid and full screen. */
   morphName: string;
+  lang: Locale;
 };
 
 const SWIPE_THRESHOLD = 40;
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export default function Lightbox({ photos, index, onIndex, onClose, morphName }: Props) {
+export default function Lightbox({ photos, index, onIndex, onClose, morphName, lang }: Props) {
+  const t = getDictionary(lang);
+  // In Hebrew (right-to-left) "next" lies to the left: the ← key goes forward, and so does
+  // swiping right, like turning the page of a Hebrew book.
+  const rtl = direction(lang) === "rtl";
   const closeButton = useRef<HTMLButtonElement>(null);
   const pointerStart = useRef<number | null>(null);
   const count = photos.length;
@@ -39,18 +45,20 @@ export default function Lightbox({ photos, index, onIndex, onClose, morphName }:
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") onIndex((index + 1) % count);
-      if (e.key === "ArrowLeft") onIndex((index - 1 + count) % count);
+      const forward = rtl ? "ArrowLeft" : "ArrowRight";
+      const backward = rtl ? "ArrowRight" : "ArrowLeft";
+      if (e.key === forward) onIndex((index + 1) % count);
+      if (e.key === backward) onIndex((index - 1 + count) % count);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [index, count, onIndex, onClose]);
+  }, [index, count, onIndex, onClose, rtl]);
 
   return (
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Photograph, full screen"
+      aria-label={t.lightbox.dialog}
       className="fixed inset-0 z-[60] flex flex-col bg-[#111] text-[#ebe7de]"
       onPointerDown={(e) => {
         pointerStart.current = e.clientX;
@@ -59,24 +67,24 @@ export default function Lightbox({ photos, index, onIndex, onClose, morphName }:
         if (pointerStart.current === null) return;
         const dx = e.clientX - pointerStart.current;
         pointerStart.current = null;
-        if (Math.abs(dx) > SWIPE_THRESHOLD) go(dx < 0 ? 1 : -1);
+        if (Math.abs(dx) > SWIPE_THRESHOLD) go((dx < 0) !== rtl ? 1 : -1);
       }}
     >
       <div className="flex items-baseline gap-6 px-6 py-5 font-mono text-xs uppercase tracking-wider sm:px-10">
         <button ref={closeButton} type="button" onClick={onClose} className="hover:text-mark">
-          × Close
+          × {t.lightbox.close}
         </button>
         <p aria-live="polite" className="tabular-nums">
           <span className="text-mark">{pad(index + 1)}</span>
           <span className="opacity-50"> / {pad(count)}</span>
         </p>
         {count > 1 && (
-          <div className="ml-auto flex gap-5">
-            <button type="button" onClick={() => go(-1)} aria-label="Previous" className="opacity-60 hover:opacity-100">
-              ←
+          <div className="ms-auto flex gap-5">
+            <button type="button" onClick={() => go(-1)} aria-label={t.lightbox.previous} className="opacity-60 hover:opacity-100">
+              {t.back}
             </button>
-            <button type="button" onClick={() => go(1)} aria-label="Next" className="opacity-60 hover:opacity-100">
-              →
+            <button type="button" onClick={() => go(1)} aria-label={t.lightbox.next} className="opacity-60 hover:opacity-100">
+              {t.forward}
             </button>
           </div>
         )}
@@ -99,7 +107,7 @@ export default function Lightbox({ photos, index, onIndex, onClose, morphName }:
             loading="eager"
             draggable={false}
             onClick={() => count > 1 && go(1)}
-            className={`h-auto max-h-full w-auto max-w-full select-none ${count > 1 ? "cursor-e-resize" : ""}`}
+            className={`h-auto max-h-full w-auto max-w-full select-none ${count > 1 ? (rtl ? "cursor-w-resize" : "cursor-e-resize") : ""}`}
             style={{ viewTransitionName: morphName }}
           />
         )}

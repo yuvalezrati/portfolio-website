@@ -23,3 +23,11 @@ Full-resolution masters go in `images/` (git-ignored). The site serves web copie
 
 Art projects live in the `artProjects` array; each `slug` becomes `/art/<slug>`. A project is a list of
 `sections` (e.g. the work, Installation, Book), each shown as its own image grid, one after another.
+
+## Languages
+
+English is served at `/`, Hebrew (right-to-left) at `/he`; the header links between them.
+`src/proxy.ts` maps root URLs onto `app/[lang]` with `lang = "en"`, so both languages share
+the same pages. Interface text is in `src/lib/i18n.ts`; each project's Hebrew title and
+statement go in its `he` field in `src/lib/content.ts`, and the CV's Hebrew text is in
+`src/app/[lang]/cv/page.tsx`.

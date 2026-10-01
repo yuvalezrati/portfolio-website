@@ -28,7 +28,7 @@ export default function Scribble({ shape, className = "" }: Props) {
       <svg
         viewBox={isLine ? "0 0 100 10" : "0 0 100 100"}
         preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full overflow-visible"
+        className="absolute inset-0 h-full w-full overflow-visible rtl:-scale-x-100"
       >
         <mask id={maskId} maskUnits="userSpaceOnUse" x="-20" y="-20" width="140" height={isLine ? 50 : 140}>
           <path
