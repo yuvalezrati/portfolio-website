@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Geist } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
 
@@ -8,8 +8,15 @@ const sans = Geist({
   subsets: ["latin"],
 });
 
-const serif = EB_Garamond({
-  variable: "--font-eb-garamond",
+const mono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const serif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  weight: "400",
+  style: ["normal", "italic"],
   subsets: ["latin"],
 });
 
@@ -20,7 +27,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${mono.variable} ${serif.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col text-left font-sans">
         <SiteHeader />
         <main className="flex-1 px-6 pb-24 pt-8 sm:px-10">{children}</main>

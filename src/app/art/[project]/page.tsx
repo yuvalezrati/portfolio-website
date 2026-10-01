@@ -29,11 +29,11 @@ export default async function ArtProjectPage({ params }: PageProps<"/art/[projec
   return (
     <>
       <div className="mb-6 flex flex-wrap items-baseline gap-x-6 gap-y-1">
-        <Link href="/art" className="text-sm opacity-40 hover:opacity-100">
+        <Link href="/art" className="font-mono text-xs uppercase tracking-wider text-ink/45 hover:text-ink">
           ← Art
         </Link>
-        <h1 className="font-serif text-3xl tracking-tight">{data.title}</h1>
-        {data.year && <p className="text-sm opacity-50">{data.year}</p>}
+        <h1 className="font-serif text-4xl italic tracking-tight">{data.title}</h1>
+        {data.year && <p className="font-mono text-xs text-ink/50">{data.year}</p>}
       </div>
 
       <ProjectSlideshows sections={sections} />
@@ -41,7 +41,7 @@ export default async function ArtProjectPage({ params }: PageProps<"/art/[projec
       {(data.description || data.meta) && (
         <div className="mt-20 max-w-xl leading-relaxed">
           {data.description && <p>{data.description}</p>}
-          {data.meta && <p className="mt-4 text-sm opacity-50">{data.meta}</p>}
+          {data.meta && <p className="mt-4 font-mono text-xs leading-relaxed text-ink/50">{data.meta}</p>}
         </div>
       )}
     </>

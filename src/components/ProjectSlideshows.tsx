@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Photo } from "@/lib/content";
+import Scribble from "./Scribble";
 import Slideshow, { withViewTransition } from "./Slideshow";
 
 type Props = {
@@ -15,7 +16,7 @@ export default function ProjectSlideshows({ sections }: Props) {
   return (
     <div>
       {sections.length > 1 && (
-        <div role="tablist" className="mb-6 flex gap-6 text-sm">
+        <div role="tablist" className="mb-6 flex gap-6 font-mono text-xs uppercase tracking-wider">
           {sections.map(({ title }, i) => (
             <button
               key={title}
@@ -23,13 +24,10 @@ export default function ProjectSlideshows({ sections }: Props) {
               role="tab"
               aria-selected={i === active}
               onClick={() => i !== active && withViewTransition(() => setActive(i))}
-              className={
-                i === active
-                  ? "underline decoration-1 underline-offset-8"
-                  : "opacity-40 hover:opacity-100"
-              }
+              className={`relative ${i === active ? "" : "text-ink/45 hover:text-ink"}`}
             >
               {title}
+              {i === active && <Scribble shape="underline" className="-bottom-2 left-0 h-2 w-full" />}
             </button>
           ))}
         </div>

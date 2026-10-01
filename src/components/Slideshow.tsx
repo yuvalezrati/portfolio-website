@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import type { Photo } from "@/lib/content";
+import Scribble from "./Scribble";
 
 type Props = {
   photos: Photo[];
@@ -59,7 +60,7 @@ export default function Slideshow({ photos }: Props) {
   return (
     <div>
       {showIndex ? (
-        <ol className="grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4 lg:grid-cols-6">
+        <ol className="grid grid-cols-3 gap-x-4 gap-y-6 bg-ink p-4 sm:grid-cols-4 sm:p-6 lg:grid-cols-6">
           {photos.map((photo, i) => (
             <li
               key={photo.src ?? i}
@@ -75,7 +76,7 @@ export default function Slideshow({ photos }: Props) {
                 }}
                 className="group block w-full"
               >
-                <span className="flex aspect-square items-end">
+                <span className="relative flex aspect-square items-end">
                   {photo.src ? (
                     <Image
                       src={photo.src}
@@ -87,13 +88,14 @@ export default function Slideshow({ photos }: Props) {
                       style={i === index ? { viewTransitionName: morphName } : undefined}
                     />
                   ) : (
-                    <span className="block h-full w-full bg-neutral-200" />
+                    <span className="block h-full w-full bg-neutral-700" />
                   )}
+                  {i === index && <Scribble shape="circle" className="-inset-3" />}
                 </span>
                 <span
-                  className={`mt-2 block text-xs tabular-nums ${i === index ? "opacity-100" : "opacity-40"}`}
+                  className={`mt-2 block font-mono text-[11px] text-mark ${i === index ? "" : "opacity-60"}`}
                 >
-                  {pad(i + 1)}
+                  ▸ {pad(i + 1)}A
                 </span>
               </button>
             </li>
@@ -173,19 +175,19 @@ export default function Slideshow({ photos }: Props) {
         </div>
       )}
 
-      <div className="mt-6 flex items-baseline gap-6 text-sm">
+      <div className="mt-6 flex items-baseline gap-6 font-mono text-xs uppercase tracking-wider">
         <p aria-live="polite" className="tabular-nums">
-          {pad(index + 1)}
-          <span className="opacity-40"> / {pad(count)}</span>
+          <span className="text-mark">{pad(index + 1)}</span>
+          <span className="text-ink/40"> / {pad(count)}</span>
         </p>
         <div className="ml-auto flex gap-6">
           {!showIndex && count > 1 && (
             <>
-              <button type="button" onClick={() => go(-1)} className="opacity-40 hover:opacity-100">
-                Prev
+              <button type="button" onClick={() => go(-1)} className="text-ink/45 hover:text-ink">
+                ← Prev
               </button>
-              <button type="button" onClick={() => go(1)} className="opacity-40 hover:opacity-100">
-                Next
+              <button type="button" onClick={() => go(1)} className="text-ink/45 hover:text-ink">
+                Next →
               </button>
             </>
           )}
@@ -193,9 +195,9 @@ export default function Slideshow({ photos }: Props) {
             type="button"
             onClick={showIndex ? closeIndex : openIndex}
             aria-pressed={showIndex}
-            className={showIndex ? "opacity-100" : "opacity-40 hover:opacity-100"}
+            className={showIndex ? "text-mark" : "text-ink/45 hover:text-ink"}
           >
-            {showIndex ? "Close index" : "Index"}
+            {showIndex ? "× Close" : "Contact sheet"}
           </button>
         </div>
       </div>

@@ -1,29 +1,48 @@
 import Link from "next/link";
-import { artProjects, navigation } from "@/lib/content";
+import Print from "@/components/Print";
+import { artProjects, concerts } from "@/lib/content";
+
+const tilts = [-3, 2.5, -1.5, 2];
 
 export default function Home() {
   return (
-    <div className="max-w-xl">
-      <p className="font-serif text-2xl leading-snug sm:text-3xl">
-        Photography — art projects, concerts and medium-format analog work.
+    <div>
+      <p className="max-w-2xl font-serif text-4xl leading-[1.05] sm:text-6xl">
+        Photographs of places that <em>insist</em> on staying beautiful
+        <span className="text-mark">.</span>
       </p>
-      <ul className="mt-16 space-y-3">
-        {navigation.map(({ href, label }) => (
+
+      <section className="mt-16">
+        <h2 className="mb-6 font-mono text-xs uppercase tracking-wider text-ink/50">Art</h2>
+        <div className="flex flex-wrap gap-8 sm:gap-0">
+          {artProjects.map(({ slug, title, year, sections }, i) => (
+            <Print
+              key={slug}
+              href={`/art/${slug}`}
+              title={title}
+              caption={year}
+              cover={sections[0]?.photos[0]}
+              tilt={tilts[i % tilts.length]}
+              eager={i === 0}
+              sizes="(min-width: 640px) 320px, 80vw"
+              className={`w-[80vw] sm:w-80 ${i > 0 ? "sm:-ml-6" : ""} ${i % 2 ? "sm:mt-10" : ""}`}
+            />
+          ))}
+        </div>
+      </section>
+
+      <ul className="mt-20 space-y-2 font-mono text-sm">
+        {[
+          { href: "/concerts", label: "Concerts", note: concerts.years },
+          { href: "/misc", label: "Misc", note: "medium-format film" },
+          { href: "/cv", label: "CV", note: "about" },
+        ].map(({ href, label, note }) => (
           <li key={href}>
-            <Link href={href} className="font-serif text-xl hover:opacity-50">
-              {label}
+            <Link href={href} className="group inline-flex items-baseline gap-3">
+              <span className="text-mark transition-transform group-hover:translate-x-1">→</span>
+              <span className="uppercase tracking-wider">{label}</span>
+              <span className="text-ink/45">{note}</span>
             </Link>
-            {href === "/art" && (
-              <ul className="mt-2 space-y-1 pl-4 text-sm">
-                {artProjects.map((p) => (
-                  <li key={p.slug}>
-                    <Link href={`/art/${p.slug}`} className="opacity-60 hover:opacity-100">
-                      {p.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
           </li>
         ))}
       </ul>

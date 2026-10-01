@@ -7,8 +7,8 @@ type Props = {
 export default function PageIntro({ title, meta, children }: Props) {
   return (
     <div className="mb-12 max-w-xl">
-      <h1 className="font-serif text-4xl tracking-tight sm:text-5xl">{title}</h1>
-      {meta && <p className="mt-2 text-sm opacity-50">{meta}</p>}
+      <h1 className="font-serif text-5xl italic tracking-tight sm:text-6xl">{title}</h1>
+      {meta && <p className="mt-2 font-mono text-xs text-ink/50">{meta}</p>}
       {children && <div className="mt-6 leading-relaxed">{children}</div>}
     </div>
   );

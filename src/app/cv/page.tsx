@@ -88,13 +88,13 @@ const experience: Entry[] = [
 function Section({ heading, entries }: { heading: string; entries: Entry[] }) {
   return (
     <section>
-      <h2 className="mb-6 text-xs uppercase tracking-widest opacity-50">{heading}</h2>
+      <h2 className="mb-6 font-mono text-xs uppercase tracking-wider text-mark">{heading}</h2>
       <ol className="space-y-6">
         {entries.map(({ years, title, details, credit, points }) => (
           <li key={`${years}-${title}`} className="grid gap-x-8 gap-y-1 sm:grid-cols-[7rem_1fr]">
-            <p className="text-sm tabular-nums opacity-50 sm:pt-1">{years}</p>
+            <p className="font-mono text-xs text-ink/50 sm:pt-1.5">{years}</p>
             <div className="leading-relaxed">
-              <p className="font-serif text-xl">{title}</p>
+              <p className="font-serif text-2xl italic leading-tight">{title}</p>
               {details && <p>{details}</p>}
               {credit && <p className="text-sm opacity-60">{credit}</p>}
               {points && (
@@ -116,9 +116,9 @@ export default function CvPage() {
   return (
     <div className="max-w-3xl">
       <header className="mb-16">
-        <h1 className="font-serif text-4xl tracking-tight sm:text-5xl">Yuval Ezrati</h1>
-        <p className="mt-2 text-sm opacity-50">Born 1997, Tel Aviv, Israel</p>
-        <p className="mt-6 max-w-xl font-serif text-xl leading-snug">
+        <h1 className="font-serif text-5xl italic tracking-tight sm:text-6xl">Yuval Ezrati</h1>
+        <p className="mt-2 font-mono text-xs text-ink/50">Born 1997, Tel Aviv, Israel</p>
+        <p className="mt-6 max-w-xl font-serif text-2xl leading-snug">
           Interdisciplinary artist with a background in photography, fine arts and computer
           science.
         </p>
@@ -128,7 +128,7 @@ export default function CvPage() {
               <a
                 href={href}
                 {...(href.startsWith("http") && { target: "_blank", rel: "noreferrer" })}
-                className="underline decoration-neutral-300 underline-offset-4 hover:decoration-current"
+                className="underline decoration-mark/40 underline-offset-4 hover:decoration-mark"
               >
                 {label}
               </a>
