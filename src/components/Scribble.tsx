@@ -11,23 +11,26 @@ const paths = {
 };
 
 export default function Scribble({ shape, className = "" }: Props) {
+  // The span takes the position/insets; an absolutely positioned <svg> alone would keep
+  // its intrinsic aspect ratio instead of stretching to the insets.
   return (
-    <svg
-      aria-hidden
-      viewBox={shape === "underline" ? "0 0 100 10" : "0 0 100 100"}
-      preserveAspectRatio="none"
-      className={`pointer-events-none absolute overflow-visible text-mark ${className}`}
-    >
-      <path
-        d={paths[shape]}
-        pathLength={1}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={shape === "underline" ? 2 : 2.5}
-        strokeLinecap="round"
-        vectorEffect="non-scaling-stroke"
-        className="animate-[draw_0.5s_cubic-bezier(0.6,0,0.2,1)_both] [stroke-dasharray:1]"
-      />
-    </svg>
+    <span aria-hidden className={`pointer-events-none absolute text-mark ${className}`}>
+      <svg
+        viewBox={shape === "underline" ? "0 0 100 10" : "0 0 100 100"}
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full overflow-visible"
+      >
+        <path
+          d={paths[shape]}
+          pathLength={1}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={shape === "underline" ? 2 : 2.5}
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+          className="animate-[draw_0.5s_cubic-bezier(0.6,0,0.2,1)_both] [stroke-dasharray:1]"
+        />
+      </svg>
+    </span>
   );
 }
