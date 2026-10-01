@@ -22,6 +22,17 @@ body {
   color: var(--foreground);
 }
 
+/* Hovering a project gently fades the others back. */
+@media (hover: hover) {
+  .showcase > li {
+    transition: opacity 0.5s ease;
+  }
+
+  .showcase:has(> li:hover) > li:not(:hover) {
+    opacity: 0.35;
+  }
+}
+
 /* Thin red line along the top that fills as you scroll. */
 .scroll-progress {
   position: fixed;
