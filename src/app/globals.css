@@ -134,3 +134,9 @@ body {
     transition: none;
   }
 }
+
+/* Grid ⇄ full screen: the photo morphs between its two places (see Gallery.tsx). */
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.1, 1);
+}
