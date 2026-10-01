@@ -9,7 +9,7 @@ export type Photo = {
 export type GalleryVariant = "book" | "dense";
 
 export type ProjectSection = {
-  /** Tab label, e.g. "Installation". Omit for the main body of work ("Photographs"). */
+  /** Section heading, e.g. "Installation". Omit for the main body of work. */
   title?: string;
   photos: Photo[];
 };

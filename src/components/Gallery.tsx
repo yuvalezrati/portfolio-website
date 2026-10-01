@@ -1,4 +1,4 @@
-import Image from "next/image";
+import DevelopingImage from "@/components/DevelopingImage";
 import type { GalleryVariant, Photo } from "@/lib/content";
 
 type Props = {
@@ -26,9 +26,10 @@ export default function Gallery({ photos, variant = "book", eager = false }: Pro
   return (
     <div className={layouts[variant]}>
       {photos.map((photo, i) => (
-        <figure key={photo.src ?? i} className="break-inside-avoid">
+        // Each photo opens like a shutter as it scrolls in, then develops (see globals.css).
+        <figure key={photo.src ?? i} className="shutter break-inside-avoid">
           {photo.src ? (
-            <Image
+            <DevelopingImage
               src={photo.src}
               alt={photo.alt}
               width={photo.width}

@@ -22,4 +22,4 @@ Full-resolution masters go in `images/` (git-ignored). The site serves web copie
 2. In `src/lib/content.ts`, replace the placeholder entries with `{ src, width, height, alt }`.
 
 Art projects live in the `artProjects` array; each `slug` becomes `/art/<slug>`. A project is a list of
-`sections` (e.g. the work, Installation, Book), each shown as its own slideshow under a tab.
+`sections` (e.g. the work, Installation, Book), each shown as its own image grid, one after another.
