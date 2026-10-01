@@ -76,21 +76,33 @@ export default function Slideshow({ photos }: Props) {
                 }}
                 className="group block w-full"
               >
-                <span className="relative flex aspect-square items-end">
-                  {photo.src ? (
-                    <Image
-                      src={photo.src}
-                      alt={photo.alt}
-                      width={photo.width}
-                      height={photo.height}
-                      sizes="(min-width: 1024px) 16vw, (min-width: 640px) 25vw, 33vw"
-                      className="h-auto max-h-full w-auto max-w-full transition-opacity group-hover:opacity-60"
-                      style={i === index ? { viewTransitionName: morphName } : undefined}
-                    />
-                  ) : (
-                    <span className="block h-full w-full bg-neutral-700" />
-                  )}
-                  {i === index && <Scribble shape="circle" className="-inset-3" />}
+                <span className="flex aspect-square items-end">
+                  {/* Sized to the photo itself, so the pencil circle hugs the image, not the cell. */}
+                  <span
+                    className={`relative block ${photo.width >= photo.height ? "w-full" : "h-full"}`}
+                    style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
+                  >
+                    {photo.src ? (
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        sizes="(min-width: 1024px) 16vw, (min-width: 640px) 25vw, 33vw"
+                        className="object-cover"
+                        style={i === index ? { viewTransitionName: morphName } : undefined}
+                      />
+                    ) : (
+                      <span className="absolute inset-0 bg-neutral-700" />
+                    )}
+                    {i === index ? (
+                      <Scribble shape="circle" className="-inset-3" />
+                    ) : (
+                      // Remounts on hover (display toggles), so the circle is drawn fresh each time.
+                      <span className="hidden group-hover:block group-focus-visible:block">
+                        <Scribble shape="circle" className="-inset-3" />
+                      </span>
+                    )}
+                  </span>
                 </span>
                 <span
                   className={`mt-2 block font-mono text-[11px] text-mark ${i === index ? "" : "opacity-60"}`}
