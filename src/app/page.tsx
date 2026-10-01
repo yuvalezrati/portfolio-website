@@ -22,7 +22,7 @@ export default function Home() {
           ].map(({ href, label, note }) => (
             <li key={href}>
               <Link href={href} className="group inline-flex items-baseline gap-4">
-                <span className="font-serif text-4xl italic leading-none">{label}</span>
+                <span className="font-display text-4xl leading-none">{label}</span>
                 <span className="font-mono text-xs text-ink/45">{note}</span>
                 <span className="font-mono text-mark transition-transform group-hover:translate-x-1">
                   →

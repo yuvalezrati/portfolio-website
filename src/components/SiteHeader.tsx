@@ -33,7 +33,7 @@ export default function SiteHeader() {
         tucked ? "-translate-y-full" : ""
       }`}
     >
-      <Link href="/" className="font-serif text-2xl italic tracking-tight">
+      <Link href="/" className="font-display text-2xl tracking-tight">
         <span
           className={`inline-block transition-[translate,opacity] delay-100 duration-500 ease-out motion-reduce:transition-none ${
             tucked ? "translate-y-4 opacity-0" : ""

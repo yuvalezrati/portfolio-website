@@ -12,9 +12,17 @@
   --color-ink: var(--foreground);
   --color-paper: var(--background);
   --color-mark: var(--mark);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-bricolage);
   --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-instrument-serif);
+  --font-display: var(--font-bricolage);
+}
+
+/* Names and titles: the same family, heavier and tighter. Base layer, so utilities can override. */
+@layer base {
+  .font-display {
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
 }
 
 body {

@@ -44,7 +44,7 @@ export default function ProjectShowcase() {
               <span className={`block sm:col-span-5 ${flipped ? "sm:order-1 sm:row-start-1" : ""}`}>
                 <span className="font-mono text-xs text-mark">{pad(i + 1)}</span>
                 <span className="drift mt-2 block w-fit">
-                  <span className="block font-serif text-5xl italic leading-[0.95] tracking-tight transition-[translate] duration-500 ease-out group-hover:translate-x-2 motion-reduce:transition-none sm:text-7xl">
+                  <span className="block font-display text-5xl leading-[0.95] tracking-tight transition-[translate] duration-500 ease-out group-hover:translate-x-2 motion-reduce:transition-none sm:text-7xl">
                     {title}
                   </span>
                 </span>

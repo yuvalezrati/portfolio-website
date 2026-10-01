@@ -32,7 +32,7 @@ export default async function ArtProjectPage({ params }: PageProps<"/art/[projec
         <Link href="/art" className="font-mono text-xs uppercase tracking-wider text-ink/45 hover:text-ink">
           ← Art
         </Link>
-        <h1 className="font-serif text-4xl italic tracking-tight">{data.title}</h1>
+        <h1 className="font-display text-4xl tracking-tight">{data.title}</h1>
         {data.year && <p className="font-mono text-xs text-ink/50">{data.year}</p>}
       </div>
 

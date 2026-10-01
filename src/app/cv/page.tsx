@@ -94,7 +94,7 @@ function Section({ heading, entries }: { heading: string; entries: Entry[] }) {
           <li key={`${years}-${title}`} className="grid gap-x-8 gap-y-1 sm:grid-cols-[7rem_1fr]">
             <p className="font-mono text-xs text-ink/50 sm:pt-1.5">{years}</p>
             <div className="leading-relaxed">
-              <p className="font-serif text-2xl italic leading-tight">{title}</p>
+              <p className="font-display text-2xl leading-tight">{title}</p>
               {details && <p>{details}</p>}
               {credit && <p className="text-sm opacity-60">{credit}</p>}
               {points && (
@@ -118,7 +118,7 @@ export default function CvPage() {
       <header className="mb-16">
         <h1 className="sr-only">CV</h1>
         <p className="font-mono text-xs text-ink/50">Born 1997, Tel Aviv, Israel</p>
-        <p className="mt-4 max-w-xl font-serif text-3xl leading-snug sm:text-4xl">
+        <p className="mt-4 max-w-xl font-display text-3xl font-normal leading-snug sm:text-4xl">
           Interdisciplinary artist with a background in photography, fine arts and computer
           science.
         </p>
