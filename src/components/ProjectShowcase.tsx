@@ -2,7 +2,6 @@ import Image from "next/image";
 import DevelopingImage from "@/components/DevelopingImage";
 import Link from "next/link";
 import Scribble from "@/components/Scribble";
-import { ToneScroller } from "@/components/Tone";
 import { artProjects } from "@/lib/content";
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -10,15 +9,14 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export default function ProjectShowcase() {
   return (
     <ol className="space-y-32 sm:space-y-48">
-      <ToneScroller />
-      {artProjects.map(({ slug, title, year, tone, sections }, i) => {
+      {artProjects.map(({ slug, title, year, sections }, i) => {
         const photos = sections.flatMap((s) => s.photos);
         const [cover, ...rest] = sections[0]?.photos ?? [];
         const strip = rest.slice(0, 4);
         const flipped = i % 2 === 1;
 
         return (
-          <li key={slug} data-tone={tone ? JSON.stringify(tone) : undefined} className="relative isolate">
+          <li key={slug} className="relative isolate">
             {/* Oversized frame number behind the project, moving at its own speed. */}
             <span
               aria-hidden

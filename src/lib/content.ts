@@ -14,13 +14,9 @@ export type ProjectSection = {
   photos: Photo[];
 };
 
-/** Page colours a project shifts the site into (background "paper", foreground "ink"). */
-export type Tone = { background: string; foreground: string };
-
 export type ArtProject = {
   slug: string;
   title: string;
-  tone?: Tone;
   year?: string;
   meta?: string;
   description?: string;
@@ -70,7 +66,6 @@ export const artProjects: ArtProject[] = [
   {
     slug: "anti-potential",
     title: "Anti-Potential",
-    tone: { background: "#e6e4d6", foreground: "#1d211b" }, // sage, hospital-garden green
     year: "2026",
     meta: "Final project, Department of Photography, Bezalel Academy of Arts and Design. Supervised by Sharon Yaari.",
     description:
@@ -121,7 +116,6 @@ export const artProjects: ArtProject[] = [
   {
     slug: "sde-dov",
     title: "Sde Dov",
-    tone: { background: "#131313", foreground: "#ebe7de" }, // darkroom, for the black-and-white series
     sections: [
       {
         photos: photoSet("sde-dov", [
@@ -142,7 +136,6 @@ export const artProjects: ArtProject[] = [
   {
     slug: "city-of-the-dead",
     title: "City of the Dead",
-    tone: { background: "#ebe1cf", foreground: "#2a2118" }, // Jerusalem limestone
     sections: [
       {
         photos: photoSet("city-of-the-dead", [
