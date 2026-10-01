@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "portfolio", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--prefix", "/Users/yuval/portfolio"], "port": 3000 }
+  ]
+}

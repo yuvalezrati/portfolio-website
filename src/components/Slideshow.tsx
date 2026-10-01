@@ -1,0 +1,204 @@
+"use client";
+
+import Image from "next/image";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import type { Photo } from "@/lib/content";
+
+type Props = {
+  photos: Photo[];
+};
+
+const SWIPE_THRESHOLD = 40;
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/**
+ * Runs a state update inside a View Transition when the browser supports it, so the
+ * element sharing a `view-transition-name` morphs between the two layouts. Falls back
+ * to an instant update (and respects reduced motion).
+ */
+export function withViewTransition(update: () => void) {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!document.startViewTransition || reduced) {
+    update();
+    return;
+  }
+  document.startViewTransition(() => flushSync(update));
+}
+
+export default function Slideshow({ photos }: Props) {
+  const [index, setIndex] = useState(0);
+  const [showIndex, setShowIndex] = useState(false);
+  const pointerStart = useRef<number | null>(null);
+  const swiped = useRef(false);
+  // The current photo carries this name in both views, so it morphs between them.
+  const morphName = `photo-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
+  const count = photos.length;
+
+  const go = useCallback((step: number) => setIndex((i) => (i + step + count) % count), [count]);
+  const openIndex = useCallback(() => withViewTransition(() => setShowIndex(true)), []);
+  const closeIndex = useCallback(() => withViewTransition(() => setShowIndex(false)), []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (showIndex) {
+        if (e.key === "Escape") closeIndex();
+        return;
+      }
+      if (e.key === "ArrowRight") go(1);
+      if (e.key === "ArrowLeft") go(-1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go, showIndex, closeIndex]);
+
+  // Only the current photo and its neighbours are mounted: they cross-fade, and the
+  // neighbours preload so the next step is instant.
+  const mounted = new Set([index, (index + 1) % count, (index - 1 + count) % count]);
+
+  return (
+    <div>
+      {showIndex ? (
+        <ol className="grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4 lg:grid-cols-6">
+          {photos.map((photo, i) => (
+            <li
+              key={photo.src ?? i}
+              className="animate-[thumb-in_0.5s_cubic-bezier(0.2,0.7,0.1,1)_both]"
+              style={{ animationDelay: i === index ? "0ms" : `${80 + i * 25}ms` }}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  // Name the chosen thumbnail first, then morph it into the slide.
+                  flushSync(() => setIndex(i));
+                  closeIndex();
+                }}
+                className="group block w-full"
+              >
+                <span className="flex aspect-square items-end">
+                  {photo.src ? (
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      width={photo.width}
+                      height={photo.height}
+                      sizes="(min-width: 1024px) 16vw, (min-width: 640px) 25vw, 33vw"
+                      className="h-auto max-h-full w-auto max-w-full transition-opacity group-hover:opacity-60"
+                      style={i === index ? { viewTransitionName: morphName } : undefined}
+                    />
+                  ) : (
+                    <span className="block h-full w-full bg-neutral-200" />
+                  )}
+                </span>
+                <span
+                  className={`mt-2 block text-xs tabular-nums ${i === index ? "opacity-100" : "opacity-40"}`}
+                >
+                  {pad(i + 1)}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <div
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Photographs"
+          className="relative h-[min(calc(100svh-17rem),125vw)] min-h-72 touch-pan-y select-none sm:h-[calc(100svh-17rem)]"
+          onPointerDown={(e) => {
+            pointerStart.current = e.clientX;
+            swiped.current = false;
+          }}
+          onPointerUp={(e) => {
+            if (pointerStart.current === null) return;
+            const dx = e.clientX - pointerStart.current;
+            pointerStart.current = null;
+            if (Math.abs(dx) > SWIPE_THRESHOLD) {
+              swiped.current = true;
+              go(dx < 0 ? 1 : -1);
+            }
+          }}
+        >
+          {photos.map((photo, i) =>
+            mounted.has(i) ? (
+              <div
+                key={photo.src ?? i}
+                aria-hidden={i !== index}
+                className={`absolute inset-0 flex items-center transition-opacity duration-500 ease-out ${
+                  i === index ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                {photo.src ? (
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={photo.width}
+                    height={photo.height}
+                    sizes="(min-width: 640px) 85vw, 100vw"
+                    quality={90}
+                    loading="eager"
+                    {...(i === 0 && { fetchPriority: "high" })}
+                    draggable={false}
+                    className="h-auto max-h-full w-auto max-w-full"
+                    style={i === index ? { viewTransitionName: morphName } : undefined}
+                  />
+                ) : (
+                  <div
+                    role="img"
+                    aria-label={photo.alt}
+                    className="h-full max-w-full bg-neutral-200"
+                    style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
+                  />
+                )}
+              </div>
+            ) : null,
+          )}
+          {/* Click zones: left half goes back, right half goes forward. */}
+          {count > 1 && (
+            <>
+              <button
+                type="button"
+                aria-label="Previous photograph"
+                onClick={() => !swiped.current && go(-1)}
+                className="absolute inset-y-0 left-0 w-1/2 cursor-w-resize focus-visible:outline-none"
+              />
+              <button
+                type="button"
+                aria-label="Next photograph"
+                onClick={() => !swiped.current && go(1)}
+                className="absolute inset-y-0 right-0 w-1/2 cursor-e-resize focus-visible:outline-none"
+              />
+            </>
+          )}
+        </div>
+      )}
+
+      <div className="mt-6 flex items-baseline gap-6 text-sm">
+        <p aria-live="polite" className="tabular-nums">
+          {pad(index + 1)}
+          <span className="opacity-40"> / {pad(count)}</span>
+        </p>
+        <div className="ml-auto flex gap-6">
+          {!showIndex && count > 1 && (
+            <>
+              <button type="button" onClick={() => go(-1)} className="opacity-40 hover:opacity-100">
+                Prev
+              </button>
+              <button type="button" onClick={() => go(1)} className="opacity-40 hover:opacity-100">
+                Next
+              </button>
+            </>
+          )}
+          <button
+            type="button"
+            onClick={showIndex ? closeIndex : openIndex}
+            aria-pressed={showIndex}
+            className={showIndex ? "opacity-100" : "opacity-40 hover:opacity-100"}
+          >
+            {showIndex ? "Close index" : "Index"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
