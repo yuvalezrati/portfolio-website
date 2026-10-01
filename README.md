@@ -6,6 +6,13 @@ Next.js (App Router) + Tailwind CSS. See `CLAUDE.md` for design rules.
 npm run dev
 ```
 
+### Preview on your phone
+
+With the dev server running and the phone on the same Wi-Fi as this Mac, open Safari on the
+phone at `http://<mac-name>.local:3000` (e.g. `http://yuvals-macbook-pro.local:3000`) or the
+"Network" address that `npm run dev` prints. `next.config.ts` allows this Mac's network
+addresses automatically.
+
 ## Adding photos
 
 Full-resolution masters go in `images/` (git-ignored). The site serves web copies:
