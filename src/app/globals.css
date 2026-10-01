@@ -39,7 +39,7 @@ body {
 }
 
 /* Scroll-driven motion: covers open like a shutter, photos drift inside their frames,
-   titles and frame numbers move at different speeds. Browsers without scroll timelines
+   titles drift sideways. Browsers without scroll timelines
    simply show everything still. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
@@ -63,11 +63,6 @@ body {
       animation: drift linear both;
       animation-timeline: view();
     }
-
-    .drift-slow {
-      animation: drift-slow linear both;
-      animation-timeline: view();
-    }
   }
 }
 
@@ -84,11 +79,6 @@ body {
 @keyframes drift {
   from { translate: 4vw 0; }
   to { translate: -2vw 0; }
-}
-
-@keyframes drift-slow {
-  from { translate: 0 30%; }
-  to { translate: 0 -30%; }
 }
 
 /* Project rule (CLAUDE.md): all text is left-aligned. Unlayered + !important so no utility can override it. */

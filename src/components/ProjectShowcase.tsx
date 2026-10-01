@@ -16,16 +16,7 @@ export default function ProjectShowcase() {
         const flipped = i % 2 === 1;
 
         return (
-          <li key={slug} className="relative isolate">
-            {/* Oversized frame number behind the project, moving at its own speed. */}
-            <span
-              aria-hidden
-              className={`drift-slow pointer-events-none absolute -top-12 -z-10 select-none font-serif text-[45vw] italic leading-none text-ink/5 sm:-top-28 sm:text-[24vw] ${
-                flipped ? "left-0" : "left-0 sm:left-1/2"
-              }`}
-            >
-              {pad(i + 1)}
-            </span>
+          <li key={slug}>
             <Link
               href={`/art/${slug}`}
               className="group grid items-end gap-6 sm:grid-cols-12 sm:gap-10"
