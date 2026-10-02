@@ -3,7 +3,7 @@ import { Bricolage_Grotesque, Geist_Mono, Heebo } from "next/font/google";
 import { notFound } from "next/navigation";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import { direction, getDictionary, isLocale, locales } from "@/lib/i18n";
+import { direction, enabledLocales, getDictionary, isLocale } from "@/lib/i18n";
 import "../globals.css";
 
 // One characterful grotesque for everything, from body text to the big titles; its
@@ -27,7 +27,7 @@ const heebo = Heebo({
 });
 
 export function generateStaticParams() {
-  return locales.map((lang) => ({ lang }));
+  return enabledLocales.map((lang) => ({ lang }));
 }
 
 export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {

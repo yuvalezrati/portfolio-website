@@ -3,6 +3,13 @@
 export const locales = ["en", "he"] as const;
 export type Locale = (typeof locales)[number];
 
+/**
+ * Languages the site actually serves. Hebrew is switched off for now: its texts stay below and
+ * in content.ts, its pages aren't built, and src/proxy.ts sends /he links to the English page.
+ * To bring it back, add "he" here and restore the header's language link (see git history).
+ */
+export const enabledLocales: readonly Locale[] = ["en"];
+
 export const isLocale = (value: string): value is Locale =>
   (locales as readonly string[]).includes(value);
 
@@ -22,7 +29,6 @@ const en = {
   name: "Yuval Ezrati",
   description: "Photography by Yuval Ezrati.",
   nav: { art: "Art", concerts: "Concerts", misc: "Misc", cv: "CV" },
-  switchTo: { label: "עברית", lang: "he" as Locale },
   forward: "→",
   back: "←",
   home: {
@@ -61,7 +67,6 @@ const he: Dictionary = {
   name: "יובל עזרתי",
   description: "צילום — יובל עזרתי.",
   nav: { art: "אמנות", concerts: "הופעות", misc: "שונות", cv: "קורות חיים" },
-  switchTo: { label: "English", lang: "en" },
   forward: "←",
   back: "→",
   home: {

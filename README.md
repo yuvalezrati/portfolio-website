@@ -26,7 +26,9 @@ Art projects live in the `artProjects` array; each `slug` becomes `/art/<slug>`.
 
 ## Languages
 
-English is served at `/`, Hebrew (right-to-left) at `/he`; the header links between them.
+English is served at `/`. A Hebrew (right-to-left) version at `/he` is built in but switched
+off for now: add `"he"` to `enabledLocales` in `src/lib/i18n.ts` and restore the header's
+language link to bring it back; meanwhile `/he` links redirect to the English page.
 `src/proxy.ts` maps root URLs onto `app/[lang]` with `lang = "en"`, so both languages share
 the same pages. Interface text is in `src/lib/i18n.ts`; each project's Hebrew title and
 statement go in its `he` field in `src/lib/content.ts`, and the CV's Hebrew text is in

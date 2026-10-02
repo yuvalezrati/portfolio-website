@@ -5,7 +5,7 @@
 - Styling: Minimalist, intuitive, gallery-focused.
 - Typography & Layout: STRICT RULE - All text must be aligned to the start of the line: left in English, right in Hebrew (`text-start`). Never center text. Use logical utilities (`ms-`/`ps-`/`start-`, `rtl:` variants) rather than left/right ones so layouts mirror in Hebrew.
 - Type: Bricolage Grotesque for Latin text, Heebo for Hebrew, Geist Mono for small labels.
-- Languages: English at `/`, Hebrew (right-to-left) at `/he`, toggled from the header. UI strings live in `src/lib/i18n.ts`; project texts have a `he` field in `src/lib/content.ts`.
+- Languages: English only for now, at `/`. A Hebrew (right-to-left) version is built in but switched off (`enabledLocales` in `src/lib/i18n.ts`; `/he` links redirect to English). UI strings live in `src/lib/i18n.ts`; project texts have a `he` field in `src/lib/content.ts`.
 - Images: Optimize for high-resolution web delivery.
 
 ## Core Navigation & Categories

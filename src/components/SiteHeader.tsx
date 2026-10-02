@@ -61,16 +61,6 @@ export default function SiteHeader({ lang }: { lang: Locale }) {
               </Link>
             );
           })}
-          {/* Same page in the other language. A plain <a> (full page load), since the whole
-              document switches language and direction (lang/dir on <html>). */}
-          <a
-            href={localePath(t.switchTo.lang, path)}
-            hrefLang={t.switchTo.lang}
-            lang={t.switchTo.lang}
-            className="text-mark normal-case tracking-normal hover:text-ink"
-          >
-            {t.switchTo.label}
-          </a>
         </nav>
       </div>
     </header>

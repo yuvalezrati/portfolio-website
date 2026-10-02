@@ -16,6 +16,9 @@ type Props = {
 };
 
 const SWIPE_THRESHOLD = 40;
+// A tall, narrow hit area just outside one edge of the photo.
+const arrow =
+  "absolute inset-y-0 flex w-12 items-center justify-center font-mono text-2xl text-ink/40 transition-colors hover:text-mark sm:w-20 sm:text-3xl";
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function Lightbox({ photos, index, onIndex, onClose, morphName, lang }: Props) {
@@ -80,24 +83,25 @@ export default function Lightbox({ photos, index, onIndex, onClose, morphName, l
         </p>
       </div>
 
-      {/* Arrows either side of the photo (they swap sides in Hebrew). Clicking the empty area
-          closes; clicking the photo moves on. */}
-      <div className="flex min-h-0 flex-1 items-center pb-6 sm:pb-10">
-        {count > 1 && (
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            aria-label={t.lightbox.previous}
-            className="flex h-full w-12 shrink-0 items-center justify-center font-mono text-2xl text-ink/40 transition-colors hover:text-mark sm:w-20 sm:text-3xl"
-          >
-            {t.back}
-          </button>
-        )}
-        <div
-          className={`flex h-full min-w-0 flex-1 items-center justify-center ${count > 1 ? "" : "px-4 sm:px-10"}`}
-          onClick={(e) => e.target === e.currentTarget && onClose()}
-        >
-          {photo.src && (
+      {/* The arrows sit just outside the photo's edges (swapping sides in Hebrew), so they stay
+          next to it whatever its shape; the side padding leaves them room. Clicking the empty
+          area closes; clicking the photo moves on. */}
+      <div
+        className="flex min-h-0 flex-1 items-center justify-center px-12 pb-6 sm:px-20 sm:pb-10"
+        onClick={(e) => e.target === e.currentTarget && onClose()}
+      >
+        {photo.src && (
+          <div className="relative">
+            {count > 1 && (
+              <button
+                type="button"
+                onClick={() => go(-1)}
+                aria-label={t.lightbox.previous}
+                className={`${arrow} end-full`}
+              >
+                {t.back}
+              </button>
+            )}
             <DevelopingImage
               key={photo.src}
               src={photo.src}
@@ -110,20 +114,20 @@ export default function Lightbox({ photos, index, onIndex, onClose, morphName, l
               loading="eager"
               draggable={false}
               onClick={() => count > 1 && go(1)}
-              className={`h-auto max-h-full w-auto max-w-full select-none ${count > 1 ? (rtl ? "cursor-w-resize" : "cursor-e-resize") : ""}`}
+              className={`block h-auto max-h-[calc(100svh-6rem)] w-auto max-w-full select-none sm:max-h-[calc(100svh-7.5rem)] ${count > 1 ? (rtl ? "cursor-w-resize" : "cursor-e-resize") : ""}`}
               style={{ viewTransitionName: morphName }}
             />
-          )}
-        </div>
-        {count > 1 && (
-          <button
-            type="button"
-            onClick={() => go(1)}
-            aria-label={t.lightbox.next}
-            className="flex h-full w-12 shrink-0 items-center justify-center font-mono text-2xl text-ink/40 transition-colors hover:text-mark sm:w-20 sm:text-3xl"
-          >
-            {t.forward}
-          </button>
+            {count > 1 && (
+              <button
+                type="button"
+                onClick={() => go(1)}
+                aria-label={t.lightbox.next}
+                className={`${arrow} start-full`}
+              >
+                {t.forward}
+              </button>
+            )}
+          </div>
         )}
       </div>
     </div>
