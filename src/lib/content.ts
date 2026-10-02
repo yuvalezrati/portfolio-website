@@ -6,12 +6,34 @@ export type Photo = {
   width: number;
   height: number;
   alt: string;
+  /** Text shown beside the photo in a "sequence" section. */
+  caption?: string;
+  /**
+   * Serve the file exactly as it is instead of through Next's image optimizer, which
+   * re-encodes it (or fails) — for deliberately corrupted JPEGs, where the bytes are the work.
+   */
+  unoptimized?: boolean;
+};
+
+export type Video = {
+  /** Path under /public. H.264 MP4 with the index at the front (ffmpeg -movflags +faststart). */
+  src: string;
+  poster: string;
+  width: number;
+  height: number;
+  /** Accessible name. */
+  title: string;
+  /** Has a soundtrack: shown with controls and never autoplays. Silent clips loop on their own. */
+  sound?: boolean;
 };
 
 export type ProjectSection = {
   /** Section heading, e.g. "Installation". Omit for the main body of work. */
   title?: string;
+  /** "grid" (default): the masonry grid. "sequence": one photo per row, its caption beside it. */
+  layout?: "grid" | "sequence";
   photos: Photo[];
+  videos?: Video[];
 };
 
 export type ArtProject = {
@@ -48,6 +70,10 @@ const photoSizes: Record<string, [number, number][]> = {
     [2048, 2560], [2500, 2000], [2500, 2030], [2500, 2028], [2500, 2023],
   ],
   concerts: Array(18).fill([2048, 1367]),
+  "art/foreign/experiment": Array(3).fill([2048, 1367]),
+  "art/foreign/images": [
+    [2048, 1367], [2560, 1703], [2560, 1512], [2560, 1711], [2560, 1709], [2560, 1538],
+  ],
   "art/city-of-the-dead": [
     [2500, 2052], [2500, 2022], [2500, 2089], [2500, 2062], [2500, 2018],
     [2500, 2015], [2085, 2560], [2043, 2560], [2500, 2045], [2186, 2560],
@@ -164,6 +190,68 @@ export const artProjects: ArtProject[] = [
           "A covered car parked behind a forked tree trunk on a sunlit street",
           "A single cypress tree against a blue sky with clouds",
         ]),
+      },
+    ],
+  },
+  {
+    slug: "foreign",
+    title: "Foreign",
+    he: {
+      title: "זר",
+      description:
+        "יובל החל לחקור את פורמט ה־JPEG ולשבש אותו באמצעות הקלדת טקסט לתוך קובצי התמונה בעורך הקסדצימלי.\n\nמאחר שפורמט התמונה בנוי מבלוקים, שיבוש התמונה בנקודה מסוימת גורם לעיתים קרובות לשורה שלמה להיעלם, לשנות צבע או לזוז ממקומה.\n\nבניסוי הראשון הזה, התמונות שובשו באמצעות הכנסת טקסט אקראי מהודעות דוא״ל לתוך הקבצים; הטקסטים מופיעים לצד התמונות שלהלן.",
+    },
+    description:
+      "Yuval began exploring the JPEG format and corrupting it by typing text into his image files using a hex editor.\n\nSince the image format is structured in blocks, corrupting the image at a specific point often causes an entire row to disappear, change color, or shift position.\n\nFor this initial experiment, the images were corrupted by inserting random text from email messages into the files; these texts are included alongside the images below.",
+    sections: [
+      {
+        // The first experiment. Each caption is the text actually typed into that file,
+        // read back out of its bytes.
+        layout: "sequence",
+        photos: photoSet("art/foreign/experiment", [
+          "A corrupted photograph in flat salmon and dark red blocks, the shapes of a room barely legible",
+          "A corrupted photograph in cyan and dark green bands, rows of shapes smeared sideways",
+          "A corrupted photograph turned almost entirely flat green",
+        ]).map((photo, i) => ({
+          ...photo,
+          unoptimized: true,
+          caption: [
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaand his soldiers, working their artillery, are transformed into 'black' men by their work. But do not focus on the literary techniques to distraction or you will miss the real art of the story, which first emerges with a soldier's hesitation. Featured in Civil War Stories",
+            "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTThis is a story that is rife with deeper symbolism as a white officer and his soldiers, working their artillery, are transformed into 'black' men by their work. But do not focus on the literary techniques to distraction or you will miss the real art of the story, which first emerges with a soldier's hesitation. Featured in Civil War Stories",
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwith deeper symbolism as a white officer and his soldiers, working their artillery, are transformed into 'black' men by their work. But do not focus on the literary techniques to distraction or you will miss the real art of the story, which first emerges with a soldier's hesitation. Featured in Civil War Stories",
+          ][i],
+        })),
+      },
+      {
+        photos: photoSet("art/foreign/images", [
+          "Two palm trees against blue sky above a building corrupted into dark red and cream blocks",
+          "Palm trees and a blue building with a red car, colours partly inverted",
+          "Golfers walking toward the sea past a windswept tree, the image subtly broken into blocks",
+          "A glacier and icy lagoon with rows of shifted, smeared pixels",
+          "Glass towers seen through a grid of windows, edges broken into jagged blocks",
+          "Palm trees outlined in blue against a pale pink sky, as if traced",
+        ]).map((photo, i) => (i === 0 ? { ...photo, unoptimized: true } : photo)),
+      },
+      {
+        title: "Video",
+        photos: [],
+        videos: [
+          {
+            src: "/photos/art/foreign/video/move.mp4",
+            poster: "/photos/art/foreign/video/move-poster.jpg",
+            width: 1146,
+            height: 1050,
+            title: "Screen recording scrolling through folders of corrupted image files",
+          },
+          {
+            src: "/photos/art/foreign/video/palms.mp4",
+            poster: "/photos/art/foreign/video/palms-poster.jpg",
+            width: 1280,
+            height: 720,
+            title: "Screen recording of corrupted images of buildings and palm trees opening and breaking apart",
+            sound: true,
+          },
+        ],
       },
     ],
   },

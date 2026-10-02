@@ -104,6 +104,7 @@ export default function Lightbox({ photos, index, onIndex, onClose, morphName, l
             height={photo.height}
             sizes="100vw"
             quality={90}
+            unoptimized={photo.unoptimized}
             loading="eager"
             draggable={false}
             onClick={() => count > 1 && go(1)}

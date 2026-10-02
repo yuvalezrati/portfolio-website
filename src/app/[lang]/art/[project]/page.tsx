@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
+import VideoList from "@/components/VideoList";
 import { artProjects, getArtProject, projectText } from "@/lib/content";
 import { getDictionary, isLocale, localePath } from "@/lib/i18n";
 
@@ -36,20 +37,25 @@ export default async function ArtProjectPage({ params }: PageProps<"/[lang]/art/
           <h1 className="font-display text-5xl tracking-tight sm:text-6xl">{title}</h1>
           {data.year && <p className="font-mono text-xs text-ink/50">{data.year}</p>}
         </div>
-        {description && <p className="mt-6 leading-relaxed">{description}</p>}
+        {description?.split("\n\n").map((paragraph) => (
+          <p key={paragraph} className="mt-6 leading-relaxed">
+            {paragraph}
+          </p>
+        ))}
         {meta && <p className="mt-4 font-mono text-xs leading-relaxed text-ink/50">{meta}</p>}
       </div>
 
-      {/* The photographs first, then any further sections (Installation, Book) as their own grids. */}
+      {/* The photographs first, then any further sections (Installation, Book, Video) in turn. */}
       <div className="space-y-24 sm:space-y-32">
-        {data.sections.map(({ title: section, photos }, i) => (
+        {data.sections.map(({ title: section, layout, photos, videos }, i) => (
           <section key={section ?? i}>
             {section && (
               <h2 className="mb-8 font-mono text-xs uppercase tracking-wider text-mark">
                 {t.project.sections[section] ?? section}
               </h2>
             )}
-            <Gallery photos={photos} eager={i === 0} lang={lang} />
+            {photos.length > 0 && <Gallery photos={photos} layout={layout} eager={i === 0} lang={lang} />}
+            {videos && <VideoList videos={videos} />}
           </section>
         ))}
       </div>
