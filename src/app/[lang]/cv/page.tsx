@@ -233,7 +233,7 @@ export default async function CvPage({ params }: PageProps<"/[lang]/cv">) {
             <li key={href}>
               <a
                 href={href}
-                // Phone numbers and handles keep left-to-right order on the Hebrew page.
+                // Email and handles keep left-to-right order on the Hebrew page.
                 dir={ltr ? "ltr" : undefined}
                 {...(href.startsWith("http") && { target: "_blank", rel: "noreferrer" })}
                 className="underline decoration-mark/40 underline-offset-4 hover:decoration-mark"
