@@ -156,6 +156,7 @@ export const artProjects: ArtProject[] = [
   {
     slug: "sde-dov",
     title: "Sde Dov",
+    year: "2025",
     he: { title: "שדה דב" },
     sections: [
       {
@@ -177,6 +178,7 @@ export const artProjects: ArtProject[] = [
   {
     slug: "city-of-the-dead",
     title: "City of the Dead",
+    year: "2025",
     he: { title: "עיר המתים" },
     sections: [
       {
@@ -203,6 +205,7 @@ export const artProjects: ArtProject[] = [
   {
     slug: "foreign",
     title: "Foreign",
+    year: "2023",
     he: {
       title: "זר",
       description:
