@@ -35,7 +35,6 @@ const en = {
     selected: "Selected projects",
     also: "Also",
     musicNote: "concerts & musicians",
-    filmNote: "medium-format film",
     aboutNote: "about",
   },
   project: {
@@ -74,7 +73,6 @@ const he: Dictionary = {
     selected: "פרויקטים נבחרים",
     also: "עוד",
     musicNote: "הופעות ומוזיקאים",
-    filmNote: "פילם בפורמט בינוני",
     aboutNote: "אודות",
   },
   project: {

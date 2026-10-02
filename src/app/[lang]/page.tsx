@@ -22,13 +22,13 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <ul className="space-y-3">
           {[
             { href: "/music", label: t.nav.music, note: t.home.musicNote },
-            { href: "/misc", label: t.nav.misc, note: t.home.filmNote },
+            { href: "/misc", label: t.nav.misc },
             { href: "/cv", label: t.nav.cv, note: t.home.aboutNote },
-          ].map(({ href, label, note }) => (
+          ].map(({ href, label, note }: { href: string; label: string; note?: string }) => (
             <li key={href}>
               <Link href={localePath(lang, href)} className="group inline-flex items-baseline gap-4">
                 <span className="font-display text-4xl leading-none">{label}</span>
-                <span className="font-mono text-xs text-ink/45">{note}</span>
+                {note && <span className="font-mono text-xs text-ink/45">{note}</span>}
                 <span className="font-mono text-mark transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
                   {t.forward}
                 </span>

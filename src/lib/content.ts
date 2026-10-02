@@ -68,7 +68,7 @@ const photoSizes: Record<string, [number, number][]> = {
   ],
   "music/concerts": Array(20).fill([2048, 1367]),
   "music/musicians/bonjour-machines": Array(4).fill([2048, 1367]),
-  "music/musicians/rachel-yaron": Array(3).fill([1709, 2560]),
+  "music/musicians/rachel-yaron": Array(4).fill([1709, 2560]),
   misc: [
     [1698, 2560], [1698, 2560], [2560, 1697], [1697, 2560], [2560, 1697], [2560, 1697], [1697, 2560], [2560, 1706], [2560, 1707], [2048, 1367], [2048, 1367], [2048, 1365], [1920, 2560],
   ],
@@ -332,6 +332,7 @@ export const music = {
       name: "Rachel Yaron",
       photos: photoSet("music/musicians/rachel-yaron", [
         "Rachel Yaron in a striped shirt among trees",
+        "Rachel Yaron against a pale wall, hair blown across the face",
         "Rachel Yaron against a blue sky, hair blowing",
         "Rachel Yaron in a dark zip-up top by a seaside park",
       ]),
