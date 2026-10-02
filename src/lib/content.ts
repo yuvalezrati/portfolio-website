@@ -33,24 +33,22 @@ const placeholders = (ratios: [number, number][], label: string): Photo[] =>
 const mediumFormat: [number, number][] = [
   [6, 7], [1, 1], [6, 7], [7, 6], [1, 1], [6, 7], [1, 1], [7, 6],
 ];
-const mixed: [number, number][] = [
-  [3, 2], [2, 3], [3, 2], [3, 2], [2, 3], [3, 2], [2, 3], [3, 2], [3, 2],
-];
 
-// Pixel sizes of the web copies in public/photos/art/<folder>/01.jpg, 02.jpg, …
+// Pixel sizes of the web copies in public/photos/<folder>/01.jpg, 02.jpg, …
 // (sRGB, max 2560px long edge). Full-resolution masters live in images/.
 const photoSizes: Record<string, [number, number][]> = {
-  "anti-potential/works": [
+  "art/anti-potential/works": [
     [2560, 2048], [2048, 1638], [2048, 1638], [2048, 1638], [2048, 1638], [2560, 2047],
     [2048, 1365], [2560, 2047], [2048, 1638], [2560, 2047], [2560, 2047],
   ],
-  "anti-potential/installation": Array(8).fill([2048, 1367]),
-  "anti-potential/book": Array(7).fill([2048, 1365]),
-  "sde-dov": [
+  "art/anti-potential/installation": Array(8).fill([2048, 1367]),
+  "art/anti-potential/book": Array(7).fill([2048, 1365]),
+  "art/sde-dov": [
     [2500, 2000], [2500, 2000], [2500, 2000], [2500, 2000], [2048, 2560],
     [2048, 2560], [2500, 2000], [2500, 2030], [2500, 2028], [2500, 2023],
   ],
-  "city-of-the-dead": [
+  concerts: Array(18).fill([2048, 1367]),
+  "art/city-of-the-dead": [
     [2500, 2052], [2500, 2022], [2500, 2089], [2500, 2062], [2500, 2018],
     [2500, 2015], [2085, 2560], [2043, 2560], [2500, 2045], [2186, 2560],
     [2500, 2052], [2500, 2006], [2500, 2000], [2500, 2034], [2097, 2560],
@@ -61,7 +59,7 @@ const photoSet = (folder: string, alts: string[]): Photo[] =>
   alts.map((alt, i) => {
     const [width, height] = photoSizes[folder][i];
     const n = String(i + 1).padStart(2, "0");
-    return { src: `/photos/art/${folder}/${n}.jpg`, width, height, alt };
+    return { src: `/photos/${folder}/${n}.jpg`, width, height, alt };
   });
 
 export const artProjects: ArtProject[] = [
@@ -81,7 +79,7 @@ export const artProjects: ArtProject[] = [
       "Photographed in 2025–2026 between the hospice at Tel HaShomer, the grounds of Sheba Medical Center, Ramat Gan, Givatayim and Eilat, cemeteries, and wanderings around home and the neighbourhood. Living, thinking and looking in the shadow of chronic illness — a record of places that insist on preserving beauty and grace, and of a personal, bodily presence within them.",
     sections: [
       {
-        photos: photoSet("anti-potential/works", [
+        photos: photoSet("art/anti-potential/works", [
           "A man in a white shirt at a wooden lectern on artificial turf, in front of a stone memorial wall with flame reliefs",
           "A man lying face down across the top of a trimmed hedge in a dry garden",
           "A gathering beneath a flower-covered canopy in a garden, a patient in a hospital bed at its centre",
@@ -97,7 +95,7 @@ export const artProjects: ArtProject[] = [
       },
       {
         title: "Installation",
-        photos: photoSet("anti-potential/installation", [
+        photos: photoSet("art/anti-potential/installation", [
           "Gallery view: framed prints on a white wall, a large print beside a wall of artificial turf, and a park bench",
           "A park bench in front of a large print of the man at the lectern",
           "Gallery view: framed prints on white and artificial-turf walls, with a park bench",
@@ -110,7 +108,7 @@ export const artProjects: ArtProject[] = [
       },
       {
         title: "Book",
-        photos: photoSet("anti-potential/book", [
+        photos: photoSet("art/anti-potential/book", [
           "Cover of the Anti-Potential book: grey cloth with a cut-out window showing a garden photograph",
           "The closed book, front cover",
           "Open spread: a car under a white cover and the same car uncovered",
@@ -128,7 +126,7 @@ export const artProjects: ArtProject[] = [
     he: { title: "שדה דב" },
     sections: [
       {
-        photos: photoSet("sde-dov", [
+        photos: photoSet("art/sde-dov", [
           "A figure holding a string toward the camera on a hazy mound of earth, a chimney behind",
           "Workers crossing a churned dirt field beside a long white tunnel structure, the sea beyond",
           "A damaged car with its hood raised and front wheel removed",
@@ -149,7 +147,7 @@ export const artProjects: ArtProject[] = [
     he: { title: "עיר המתים" },
     sections: [
       {
-        photos: photoSet("city-of-the-dead", [
+        photos: photoSet("art/city-of-the-dead", [
           "An ornate wrought-iron gate casting patterned shadows on a white cloth, forested hills beyond",
           "A long pale hall lined with columns and a red geometric lamp, rows of tombs at its end",
           "A white concrete pavilion with a bookshelf, beside a tall cypress against blue sky",
@@ -189,7 +187,26 @@ export const projectText = (project: ArtProject, lang: Locale) => {
 
 export const concerts = {
   years: "2017–2019",
-  photos: placeholders([...mixed, ...mixed], "Concert"),
+  photos: photoSet("concerts", [
+    "A performer in a red and black outfit, arms raised, lit red and blue from the stage",
+    "A saxophonist in a wide straw hat playing under red stage light",
+    "A large crowd before a stage with two angular screens in green smoke",
+    "A performer reaching up into yellow-green light and haze",
+    "A guitarist in silhouette against blinding amber light",
+    "A singer with arms spread wide as flame jets burst behind",
+    "A singer in a hoodie beneath a row of yellow stage lights",
+    "A bearded performer with palms pressed together in warm backlight",
+    "A performer in camouflage on a stage of red and pink light beams",
+    "A singer in a polka-dot jacket with a microphone, against pink and blue light",
+    "Guitar effects pedals and a water bottle on a dark stage floor",
+    "A singer with both arms raised toward the light, in black and white",
+    "Raised hands of the crowd silhouetted against blue light, a performer among them",
+    "A singer at a microphone in deep blue and magenta light",
+    "A four-piece band standing apart in an angular concrete space",
+    "A band leaning in a row against a white wall",
+    "A four-piece band standing in front of white louvred doors",
+    "A band posed on a rock by the sea",
+  ]),
 };
 
 export const misc = {

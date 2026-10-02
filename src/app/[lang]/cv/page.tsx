@@ -216,7 +216,7 @@ export default async function CvPage({ params }: PageProps<"/[lang]/cv">) {
 
   const contact = [
     { label: "yuval.ezrati@gmail.com", href: "mailto:yuval.ezrati@gmail.com", ltr: true },
-    { label: "Instagram @yuvalezrati", href: "https://instagram.com/yuvalezrati", ltr: true },
+    { label: "@yuvalezrati", href: "https://instagram.com/yuvalezrati", ltr: true },
     { label: c.portfolio, href: PORTFOLIO_URL, ltr: false },
   ];
 

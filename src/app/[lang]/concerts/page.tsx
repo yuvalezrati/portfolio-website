@@ -16,7 +16,7 @@ export default async function ConcertsPage({ params }: PageProps<"/[lang]/concer
 
   return (
     <>
-      <PageIntro title={getDictionary(lang).nav.concerts} meta={concerts.years} />
+      <PageIntro title={getDictionary(lang).nav.concerts} />
       <Gallery photos={concerts.photos} lang={lang} />
     </>
   );
