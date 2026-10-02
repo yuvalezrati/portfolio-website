@@ -72,8 +72,10 @@ export default function Gallery({ photos, lang, eager = false }: Props) {
   return (
     <>
       {/* Simple masonry: even columns, photos at their natural heights. Each photo opens like a
-          shutter as it scrolls in, then develops (see globals.css). */}
-      <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [&>figure]:mb-3">
+          shutter as it scrolls in, then develops (see globals.css). The vertical gap is padding,
+          not margin: Safari carries a margin across a column break, pushing the next column's
+          first photo down so the columns' tops don't line up. */}
+      <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [&>figure]:pb-3">
         {photos.map((photo, i) => (
           <figure key={photo.src ?? i} id={`${morphName}-${i}`} className="shutter break-inside-avoid">
             {image(photo, i, "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw")}
