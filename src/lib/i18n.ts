@@ -38,6 +38,7 @@ const en = {
     sections: { Installation: "Installation", Book: "Book", Video: "Video" } as Record<string, string>,
   },
   misc: { description: "Other medium-format analog work." },
+  sequence: { pause: "Pause", play: "Play" },
   footer: { frame: "Frame", endOfRoll: "end of roll", rewind: "Rewind" },
   notFound: {
     frame: "Frame 404",
@@ -76,6 +77,7 @@ const he: Dictionary = {
     sections: { Installation: "הצבה", Book: "ספר", Video: "וידאו" },
   },
   misc: { description: "עבודות אנלוגיות נוספות בפורמט בינוני." },
+  sequence: { pause: "השהיה", play: "הפעלה" },
   footer: { frame: "פריים", endOfRoll: "סוף הסרט", rewind: "גלגול אחורה" },
   notFound: {
     frame: "פריים 404",

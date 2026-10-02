@@ -6,7 +6,7 @@ export type Photo = {
   width: number;
   height: number;
   alt: string;
-  /** Text shown beside the photo in a "sequence" section. */
+  /** Text shown beside the photo in a "running" section. */
   caption?: string;
   /**
    * Serve the file exactly as it is instead of through Next's image optimizer, which
@@ -30,8 +30,14 @@ export type Video = {
 export type ProjectSection = {
   /** Section heading, e.g. "Installation". Omit for the main body of work. */
   title?: string;
-  /** "grid" (default): the masonry grid. "sequence": one photo per row, its caption beside it. */
-  layout?: "grid" | "sequence";
+  /**
+   * "grid" (default): the masonry grid. "running": the photos play in place as a looping
+   * sequence, each caption beside its photo.
+   */
+  layout?: "grid" | "running";
+  /** For "running": milliseconds per frame, and a description of the whole sequence. */
+  interval?: number;
+  label?: string;
   photos: Photo[];
   videos?: Video[];
 };
@@ -70,7 +76,9 @@ const photoSizes: Record<string, [number, number][]> = {
     [2048, 2560], [2500, 2000], [2500, 2030], [2500, 2028], [2500, 2023],
   ],
   concerts: Array(18).fill([2048, 1367]),
-  "art/foreign/experiment": Array(3).fill([2048, 1367]),
+  "art/foreign/sequence1": Array(3).fill([2560, 1644]),
+  "art/foreign/sequence2/bridge": Array(30).fill([2048, 1367]),
+  "art/foreign/sequence2/glacier": Array(30).fill([2048, 1367]),
   "art/foreign/images": [
     [2048, 1367], [2560, 1703], [2560, 1512], [2560, 1711], [2560, 1709], [2560, 1538],
   ],
@@ -207,19 +215,36 @@ export const artProjects: ArtProject[] = [
       {
         // The first experiment. Each caption is the text actually typed into that file,
         // read back out of its bytes.
-        layout: "sequence",
-        photos: photoSet("art/foreign/experiment", [
-          "A corrupted photograph in flat salmon and dark red blocks, the shapes of a room barely legible",
-          "A corrupted photograph in cyan and dark green bands, rows of shapes smeared sideways",
-          "A corrupted photograph turned almost entirely flat green",
-        ]).map((photo, i) => ({
+        layout: "running",
+        interval: 1200,
+        label: "A photograph of a room of slot machines, corrupted three ways: in salmon and dark red blocks, in teal and green bands, and in magenta outlines",
+        photos: photoSet("art/foreign/sequence1", ["", "", ""]).map((photo, i) => ({
           ...photo,
-          unoptimized: true,
           caption: [
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaand his soldiers, working their artillery, are transformed into 'black' men by their work. But do not focus on the literary techniques to distraction or you will miss the real art of the story, which first emerges with a soldier's hesitation. Featured in Civil War Stories",
             "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTThis is a story that is rife with deeper symbolism as a white officer and his soldiers, working their artillery, are transformed into 'black' men by their work. But do not focus on the literary techniques to distraction or you will miss the real art of the story, which first emerges with a soldier's hesitation. Featured in Civil War Stories",
             "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwith deeper symbolism as a white officer and his soldiers, working their artillery, are transformed into 'black' men by their work. But do not focus on the literary techniques to distraction or you will miss the real art of the story, which first emerges with a soldier's hesitation. Featured in Civil War Stories",
           ][i],
+        })),
+      },
+      // Every 10th frame of two corruption runs (video7), each played as a short loop. The frames
+      // are the corrupted files themselves, so they're served as they are.
+      {
+        layout: "running",
+        interval: 200,
+        label: "A photograph of a woman walking on a red bridge, breaking down frame by frame into pale pink",
+        photos: photoSet("art/foreign/sequence2/bridge", Array(30).fill("")).map((photo) => ({
+          ...photo,
+          unoptimized: true,
+        })),
+      },
+      {
+        layout: "running",
+        interval: 200,
+        label: "A photograph of a figure on a beach of glacier ice, breaking down frame by frame into darkness and then icy blue",
+        photos: photoSet("art/foreign/sequence2/glacier", Array(30).fill("")).map((photo) => ({
+          ...photo,
+          unoptimized: true,
         })),
       },
       {

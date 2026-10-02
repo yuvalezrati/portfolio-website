@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
+import RunningSequence from "@/components/RunningSequence";
 import VideoList from "@/components/VideoList";
 import { artProjects, getArtProject, projectText } from "@/lib/content";
 import { getDictionary, isLocale, localePath } from "@/lib/i18n";
@@ -47,14 +48,19 @@ export default async function ArtProjectPage({ params }: PageProps<"/[lang]/art/
 
       {/* The photographs first, then any further sections (Installation, Book, Video) in turn. */}
       <div className="space-y-24 sm:space-y-32">
-        {data.sections.map(({ title: section, layout, photos, videos }, i) => (
+        {data.sections.map(({ title: section, layout, interval, label, photos, videos }, i) => (
           <section key={section ?? i}>
             {section && (
               <h2 className="mb-8 font-mono text-xs uppercase tracking-wider text-mark">
                 {t.project.sections[section] ?? section}
               </h2>
             )}
-            {photos.length > 0 && <Gallery photos={photos} layout={layout} eager={i === 0} lang={lang} />}
+            {photos.length > 0 &&
+              (layout === "running" ? (
+                <RunningSequence photos={photos} lang={lang} interval={interval ?? 1000} label={label ?? ""} />
+              ) : (
+                <Gallery photos={photos} eager={i === 0} lang={lang} />
+              ))}
             {videos && <VideoList videos={videos} />}
           </section>
         ))}
