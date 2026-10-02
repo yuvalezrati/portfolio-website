@@ -18,22 +18,17 @@ type Entry = {
 type Cv = {
   born: string;
   statement: string;
-  portfolio: string;
   headings: { education: string; exhibitions: string; experience: string };
   education: Entry[];
   exhibitions: Entry[];
   experience: Entry[];
 };
 
-const PORTFOLIO_URL =
-  "https://docs.google.com/presentation/d/1FxaS4N-MkuAGpt2-OJRTKPkHy6e1MVeQRpALbnIZS7o/edit?usp=sharing";
-
 const cv: Record<Locale, Cv> = {
   en: {
     born: "Born 1997, Tel Aviv, Israel",
     statement:
       "Interdisciplinary artist with a background in photography, fine arts and computer science.",
-    portfolio: "Portfolio deck",
     headings: {
       education: "Education",
       exhibitions: "Group Exhibitions",
@@ -108,7 +103,6 @@ const cv: Record<Locale, Cv> = {
   he: {
     born: "תל אביב, 1997",
     statement: "עבודה בין־תחומית, עם רקע בצילום, באמנות ובמדעי המחשב.",
-    portfolio: "תיק עבודות (מצגת)",
     headings: {
       education: "השכלה",
       exhibitions: "תערוכות קבוצתיות",
@@ -215,9 +209,8 @@ export default async function CvPage({ params }: PageProps<"/[lang]/cv">) {
   const c = cv[lang];
 
   const contact = [
-    { label: "yuval.ezrati@gmail.com", href: "mailto:yuval.ezrati@gmail.com", ltr: true },
-    { label: "@yuvalezrati", href: "https://instagram.com/yuvalezrati", ltr: true },
-    { label: c.portfolio, href: PORTFOLIO_URL, ltr: false },
+    { label: "yuval.ezrati@gmail.com", href: "mailto:yuval.ezrati@gmail.com" },
+    { label: "@yuvalezrati", href: "https://instagram.com/yuvalezrati" },
   ];
 
   return (
@@ -229,12 +222,12 @@ export default async function CvPage({ params }: PageProps<"/[lang]/cv">) {
           {c.statement}
         </p>
         <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-1 text-sm">
-          {contact.map(({ label, href, ltr }) => (
+          {contact.map(({ label, href }) => (
             <li key={href}>
               <a
                 href={href}
                 // Email and handles keep left-to-right order on the Hebrew page.
-                dir={ltr ? "ltr" : undefined}
+                dir="ltr"
                 {...(href.startsWith("http") && { target: "_blank", rel: "noreferrer" })}
                 className="underline decoration-mark/40 underline-offset-4 hover:decoration-mark"
               >
