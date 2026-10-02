@@ -53,7 +53,7 @@ export type ArtProject = {
   sections: ProjectSection[];
 };
 
-// Pixel sizes of the web copies in public/photos/<folder>/01.jpg, 02.jpg, …
+// Pixel sizes of the web copies in public/photos/<folder>/, in display order
 // (sRGB, max 2560px long edge). Full-resolution masters live in images/.
 const photoSizes: Record<string, [number, number][]> = {
   "art/anti-potential/works": [
@@ -85,11 +85,14 @@ const photoSizes: Record<string, [number, number][]> = {
   ],
 };
 
-const photoSet = (folder: string, alts: string[]): Photo[] =>
+// Web copies are 01.jpg, 02.jpg, … unless `files` names them. When a folder gains or loses
+// photos, name its copies after the originals (e.g. "dsc-0452") instead: renumbering would give
+// an old address to a different photo, and browsers and the image cache keep serving the old one.
+const photoSet = (folder: string, alts: string[], files?: string[]): Photo[] =>
   alts.map((alt, i) => {
     const [width, height] = photoSizes[folder][i];
-    const n = String(i + 1).padStart(2, "0");
-    return { src: `/photos/${folder}/${n}.jpg`, width, height, alt };
+    const name = files?.[i] ?? String(i + 1).padStart(2, "0");
+    return { src: `/photos/${folder}/${name}.jpg`, width, height, alt };
   });
 
 export const artProjects: ArtProject[] = [
@@ -335,7 +338,7 @@ export const music = {
         "Rachel Yaron against a pale wall, hair blown across the face",
         "Rachel Yaron against a blue sky, hair blowing",
         "Rachel Yaron in a dark zip-up top by a seaside park",
-      ]),
+      ], ["dsc-0452", "dsc-0483", "dsc-0641", "dsc-0830"]),
     },
   ],
 };
