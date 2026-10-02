@@ -32,45 +32,47 @@ export default function SiteHeader({ lang }: { lang: Locale }) {
 
   return (
     <header
-      className={`sticky top-0 z-40 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 bg-paper/90 px-6 py-6 backdrop-blur-sm transition-transform duration-300 ease-out motion-reduce:transition-none sm:px-10 ${
+      className={`sticky top-0 z-40 bg-paper/90 px-6 py-6 backdrop-blur-sm transition-transform duration-300 ease-out motion-reduce:transition-none sm:px-10 ${
         tucked ? "-translate-y-full" : ""
       }`}
     >
-      <Link href={localePath(lang, "/")} className="font-display text-2xl tracking-tight">
-        <span
-          className={`inline-block transition-[translate,opacity] delay-100 duration-500 ease-out motion-reduce:transition-none ${
-            tucked ? "translate-y-4 opacity-0" : ""
-          }`}
-        >
-          {t.name}
-        </span>
-      </Link>
-      <nav className="flex gap-6 font-mono text-xs uppercase tracking-wider">
-        {navigation.map(({ href, key }) => {
-          const active = path === href || path.startsWith(`${href}/`);
-          return (
-            <Link
-              key={href}
-              href={localePath(lang, href)}
-              aria-current={active ? "page" : undefined}
-              className={`relative ${active ? "" : "text-ink/45 transition-colors hover:text-ink"}`}
-            >
-              {t.nav[key]}
-              {active && <Scribble key={path} shape="underline" className="-bottom-2 start-0 h-2 w-full" />}
-            </Link>
-          );
-        })}
-        {/* Same page in the other language. A plain <a> (full page load), since the whole
-            document switches language and direction (lang/dir on <html>). */}
-        <a
-          href={localePath(t.switchTo.lang, path)}
-          hrefLang={t.switchTo.lang}
-          lang={t.switchTo.lang}
-          className="text-mark normal-case tracking-normal hover:text-ink"
-        >
-          {t.switchTo.label}
-        </a>
-      </nav>
+      <div className="page-column flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+        <Link href={localePath(lang, "/")} className="font-display text-2xl tracking-tight">
+          <span
+            className={`inline-block transition-[translate,opacity] delay-100 duration-500 ease-out motion-reduce:transition-none ${
+              tucked ? "translate-y-4 opacity-0" : ""
+            }`}
+          >
+            {t.name}
+          </span>
+        </Link>
+        <nav className="flex gap-6 font-mono text-xs uppercase tracking-wider">
+          {navigation.map(({ href, key }) => {
+            const active = path === href || path.startsWith(`${href}/`);
+            return (
+              <Link
+                key={href}
+                href={localePath(lang, href)}
+                aria-current={active ? "page" : undefined}
+                className={`relative ${active ? "" : "text-ink/45 transition-colors hover:text-ink"}`}
+              >
+                {t.nav[key]}
+                {active && <Scribble key={path} shape="underline" className="-bottom-2 start-0 h-2 w-full" />}
+              </Link>
+            );
+          })}
+          {/* Same page in the other language. A plain <a> (full page load), since the whole
+              document switches language and direction (lang/dir on <html>). */}
+          <a
+            href={localePath(t.switchTo.lang, path)}
+            hrefLang={t.switchTo.lang}
+            lang={t.switchTo.lang}
+            className="text-mark normal-case tracking-normal hover:text-ink"
+          >
+            {t.switchTo.label}
+          </a>
+        </nav>
+      </div>
     </header>
   );
 }

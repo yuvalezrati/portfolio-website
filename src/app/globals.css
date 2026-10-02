@@ -47,6 +47,14 @@ body {
   }
 }
 
+/* Content column: on big screens the site stops growing at 1280px and sits centred, so photos
+   and titles keep their proportions. Text inside still aligns to the start of the line. */
+.page-column {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+
 /* Thin red line along the top that fills as you scroll. */
 .scroll-progress {
   position: fixed;

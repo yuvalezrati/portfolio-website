@@ -53,7 +53,9 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       <body className="flex min-h-full flex-col text-start font-sans">
         <div aria-hidden className="scroll-progress" />
         <SiteHeader lang={lang} />
-        <main className="flex-1 px-6 pb-24 pt-8 sm:px-10">{children}</main>
+        <main className="flex-1 px-6 pb-24 pt-8 sm:px-10">
+          <div className="page-column">{children}</div>
+        </main>
         <SiteFooter lang={lang} />
       </body>
     </html>
