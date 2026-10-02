@@ -39,7 +39,7 @@ const en = {
   },
   misc: { description: "Other medium-format analog work." },
   sequence: { pause: "Pause", play: "Play" },
-  footer: { frame: "Frame", endOfRoll: "end of roll", rewind: "Rewind" },
+  footer: { rewind: "Rewind" },
   notFound: {
     frame: "Frame 404",
     title: "Overexposed.",
@@ -78,7 +78,7 @@ const he: Dictionary = {
   },
   misc: { description: "עבודות אנלוגיות נוספות בפורמט בינוני." },
   sequence: { pause: "השהיה", play: "הפעלה" },
-  footer: { frame: "פריים", endOfRoll: "סוף הסרט", rewind: "גלגול אחורה" },
+  footer: { rewind: "גלגול אחורה" },
   notFound: {
     frame: "פריים 404",
     title: "חשיפת יתר.",

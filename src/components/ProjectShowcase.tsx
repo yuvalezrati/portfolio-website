@@ -16,7 +16,6 @@ export default function ProjectShowcase({ lang }: { lang: Locale }) {
         const photos = sections.flatMap((s) => s.photos);
         const [cover, ...rest] = sections[0]?.photos ?? [];
         const strip = rest.slice(0, 4);
-        const flipped = i % 2 === 1;
 
         return (
           <li key={slug}>
@@ -24,14 +23,10 @@ export default function ProjectShowcase({ lang }: { lang: Locale }) {
               href={localePath(lang, `/art/${slug}`)}
               className="group grid items-end gap-6 sm:grid-cols-12 sm:gap-10"
             >
-              <span
-                className={`shutter relative block aspect-[5/4] overflow-hidden bg-ink/10 sm:col-span-7 ${
-                  flipped ? "sm:order-2 sm:col-start-6" : ""
-                }`}
-              >
-                {/* Taller than the frame so the photo can drift inside it (parallax);
-                    on hover it eases slightly closer. */}
-                <span className="parallax absolute inset-x-0 -top-[8%] block h-[116%] transition-[scale] duration-[1200ms] ease-out group-hover:scale-[1.04] motion-reduce:transition-none">
+              <span className="relative block aspect-[5/4] overflow-hidden bg-ink/10 sm:col-span-7">
+                {/* The photo is a touch taller than its frame, which sets each cover's framing;
+                    it doesn't move with scrolling, only eases slightly closer on hover. */}
+                <span className="absolute inset-x-0 -top-[8%] block h-[116%] transition-[scale] duration-[1200ms] ease-out group-hover:scale-[1.04] motion-reduce:transition-none">
                   {cover?.src && (
                     <DevelopingImage
                       src={cover.src}
@@ -45,7 +40,7 @@ export default function ProjectShowcase({ lang }: { lang: Locale }) {
                 </span>
               </span>
 
-              <span className={`block sm:col-span-5 ${flipped ? "sm:order-1 sm:row-start-1" : ""}`}>
+              <span className="block sm:col-span-5">
                 <span className="font-mono text-xs text-mark">{pad(i + 1)}</span>
                 <span className="drift mt-2 block w-fit">
                   <span className="block font-display text-5xl leading-[0.95] tracking-tight transition-[translate] duration-500 ease-out group-hover:translate-x-2 rtl:group-hover:-translate-x-2 motion-reduce:transition-none sm:text-7xl">

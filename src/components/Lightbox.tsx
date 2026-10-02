@@ -59,7 +59,7 @@ export default function Lightbox({ photos, index, onIndex, onClose, morphName, l
       role="dialog"
       aria-modal="true"
       aria-label={t.lightbox.dialog}
-      className="fixed inset-0 z-[60] flex flex-col bg-[#111] text-[#ebe7de]"
+      className="fixed inset-0 z-[60] flex flex-col bg-paper text-ink"
       onPointerDown={(e) => {
         pointerStart.current = e.clientX;
       }}
@@ -78,39 +78,52 @@ export default function Lightbox({ photos, index, onIndex, onClose, morphName, l
           <span className="text-mark">{pad(index + 1)}</span>
           <span className="opacity-50"> / {pad(count)}</span>
         </p>
-        {count > 1 && (
-          <div className="ms-auto flex gap-5">
-            <button type="button" onClick={() => go(-1)} aria-label={t.lightbox.previous} className="opacity-60 hover:opacity-100">
-              {t.back}
-            </button>
-            <button type="button" onClick={() => go(1)} aria-label={t.lightbox.next} className="opacity-60 hover:opacity-100">
-              {t.forward}
-            </button>
-          </div>
-        )}
       </div>
 
-      {/* Clicking the dark area closes; clicking the photo moves on. */}
-      <div
-        className="flex min-h-0 flex-1 items-center justify-center px-4 pb-6 sm:px-10 sm:pb-10"
-        onClick={(e) => e.target === e.currentTarget && onClose()}
-      >
-        {photo.src && (
-          <DevelopingImage
-            key={photo.src}
-            src={photo.src}
-            alt={photo.alt}
-            width={photo.width}
-            height={photo.height}
-            sizes="100vw"
-            quality={90}
-            unoptimized={photo.unoptimized}
-            loading="eager"
-            draggable={false}
-            onClick={() => count > 1 && go(1)}
-            className={`h-auto max-h-full w-auto max-w-full select-none ${count > 1 ? (rtl ? "cursor-w-resize" : "cursor-e-resize") : ""}`}
-            style={{ viewTransitionName: morphName }}
-          />
+      {/* Arrows either side of the photo (they swap sides in Hebrew). Clicking the empty area
+          closes; clicking the photo moves on. */}
+      <div className="flex min-h-0 flex-1 items-center pb-6 sm:pb-10">
+        {count > 1 && (
+          <button
+            type="button"
+            onClick={() => go(-1)}
+            aria-label={t.lightbox.previous}
+            className="flex h-full w-12 shrink-0 items-center justify-center font-mono text-2xl text-ink/40 transition-colors hover:text-mark sm:w-20 sm:text-3xl"
+          >
+            {t.back}
+          </button>
+        )}
+        <div
+          className={`flex h-full min-w-0 flex-1 items-center justify-center ${count > 1 ? "" : "px-4 sm:px-10"}`}
+          onClick={(e) => e.target === e.currentTarget && onClose()}
+        >
+          {photo.src && (
+            <DevelopingImage
+              key={photo.src}
+              src={photo.src}
+              alt={photo.alt}
+              width={photo.width}
+              height={photo.height}
+              sizes="100vw"
+              quality={90}
+              unoptimized={photo.unoptimized}
+              loading="eager"
+              draggable={false}
+              onClick={() => count > 1 && go(1)}
+              className={`h-auto max-h-full w-auto max-w-full select-none ${count > 1 ? (rtl ? "cursor-w-resize" : "cursor-e-resize") : ""}`}
+              style={{ viewTransitionName: morphName }}
+            />
+          )}
+        </div>
+        {count > 1 && (
+          <button
+            type="button"
+            onClick={() => go(1)}
+            aria-label={t.lightbox.next}
+            className="flex h-full w-12 shrink-0 items-center justify-center font-mono text-2xl text-ink/40 transition-colors hover:text-mark sm:w-20 sm:text-3xl"
+          >
+            {t.forward}
+          </button>
         )}
       </div>
     </div>

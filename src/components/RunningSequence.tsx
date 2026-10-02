@@ -66,7 +66,7 @@ export default function RunningSequence({ photos, lang, interval, label }: Props
     <div
       className={`grid items-start gap-4 ${hasCaptions ? "lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-10" : ""}`}
     >
-      <div className="shutter">
+      <div>
         <div
           ref={frame}
           role="img"

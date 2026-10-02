@@ -76,25 +76,13 @@ body {
   to { transform: scaleX(1); }
 }
 
-/* Scroll-driven motion: covers open like a shutter, photos drift inside their frames,
-   titles drift sideways. Browsers without scroll timelines
-   simply show everything still. */
+/* Scroll-driven motion: project titles drift sideways as they pass, and the progress line
+   fills. Browsers without scroll timelines simply show everything still. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .scroll-progress {
       animation: progress linear both;
       animation-timeline: scroll(root);
-    }
-
-    .shutter {
-      animation: shutter linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 100%;
-    }
-
-    .parallax {
-      animation: parallax linear both;
-      animation-timeline: view();
     }
 
     .drift {
@@ -103,34 +91,15 @@ body {
     }
 
     /* Mirrored for right-to-left (Hebrew). */
-    [dir="rtl"] .shutter {
-      animation-name: shutter-rtl;
-    }
-
     [dir="rtl"] .drift {
       animation-name: drift-rtl;
     }
   }
 }
 
-@keyframes shutter {
-  from { clip-path: inset(16% 12% 16% 0); }
-  to { clip-path: inset(0); }
-}
-
-@keyframes parallax {
-  from { transform: translateY(-6%); }
-  to { transform: translateY(6%); }
-}
-
 @keyframes drift {
   from { translate: 4vw 0; }
   to { translate: -2vw 0; }
-}
-
-@keyframes shutter-rtl {
-  from { clip-path: inset(16% 0 16% 12%); }
-  to { clip-path: inset(0); }
 }
 
 @keyframes drift-rtl {
