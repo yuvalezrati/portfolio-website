@@ -53,15 +53,6 @@ export type ArtProject = {
   sections: ProjectSection[];
 };
 
-// Placeholder frames so the layout is visible before real images are added.
-// Replace each with { src: "/photos/...", width, height, alt }.
-const placeholders = (ratios: [number, number][], label: string): Photo[] =>
-  ratios.map(([width, height], i) => ({ width, height, alt: `${label} ${i + 1}` }));
-
-const mediumFormat: [number, number][] = [
-  [6, 7], [1, 1], [6, 7], [7, 6], [1, 1], [6, 7], [1, 1], [7, 6],
-];
-
 // Pixel sizes of the web copies in public/photos/<folder>/01.jpg, 02.jpg, …
 // (sRGB, max 2560px long edge). Full-resolution masters live in images/.
 const photoSizes: Record<string, [number, number][]> = {
@@ -75,7 +66,12 @@ const photoSizes: Record<string, [number, number][]> = {
     [2500, 2000], [2500, 2000], [2500, 2000], [2500, 2000], [2048, 2560],
     [2048, 2560], [2500, 2000], [2500, 2030], [2500, 2028], [2500, 2023],
   ],
-  concerts: Array(18).fill([2048, 1367]),
+  "music/concerts": Array(20).fill([2048, 1367]),
+  "music/musicians/bonjour-machines": Array(4).fill([2048, 1367]),
+  "music/musicians/rachel-yaron": Array(3).fill([1709, 2560]),
+  misc: [
+    [1698, 2560], [1698, 2560], [2560, 1697], [1697, 2560], [2560, 1697], [2560, 1697], [1697, 2560], [2560, 1706], [2560, 1707], [2048, 1367], [2048, 1367], [2048, 1365], [1920, 2560],
+  ],
   "art/foreign/sequence1": Array(3).fill([2560, 1644]),
   "art/foreign/sequence2/bridge": Array(30).fill([2048, 1367]),
   "art/foreign/sequence2/glacier": Array(30).fill([2048, 1367]),
@@ -298,9 +294,9 @@ export const projectText = (project: ArtProject, lang: Locale) => {
   };
 };
 
-export const concerts = {
-  years: "2017–2019",
-  photos: photoSet("concerts", [
+/** The Music page: concerts, then a section per musician. */
+export const music = {
+  concerts: photoSet("music/concerts", [
     "A performer in a red and black outfit, arms raised, lit red and blue from the stage",
     "A saxophonist in a wide straw hat playing under red stage light",
     "A large crowd before a stage with two angular screens in green smoke",
@@ -314,22 +310,57 @@ export const concerts = {
     "Guitar effects pedals and a water bottle on a dark stage floor",
     "A singer with both arms raised toward the light, in black and white",
     "Raised hands of the crowd silhouetted against blue light, a performer among them",
+    "A flautist playing in a warm-lit room beside a glowing lamp",
+    "A large ensemble performing in a dark club, seen from above",
+    "A guitarist singing at a microphone under violet light",
     "A singer at a microphone in deep blue and magenta light",
-    "A four-piece band standing apart in an angular concrete space",
-    "A band leaning in a row against a white wall",
-    "A four-piece band standing in front of white louvred doors",
-    "A band posed on a rock by the sea",
+    "A singer with eyes closed at a microphone in near darkness",
+    "A performer in a red jacket at the decks in a crowded room",
+    "A guitarist with an acoustic guitar under pink and blue light",
   ]),
+  musicians: [
+    {
+      name: "Bonjour Machines",
+      photos: photoSet("music/musicians/bonjour-machines", [
+        "Bonjour Machines, four musicians standing apart in an angular concrete space",
+        "Bonjour Machines leaning in a row against a white wall",
+        "Bonjour Machines standing in front of white louvred doors",
+        "Bonjour Machines posed on a rock by the sea",
+      ]),
+    },
+    {
+      name: "Rachel Yaron",
+      photos: photoSet("music/musicians/rachel-yaron", [
+        "Rachel Yaron in a striped shirt among trees",
+        "Rachel Yaron against a blue sky, hair blowing",
+        "Rachel Yaron in a dark zip-up top by a seaside park",
+      ]),
+    },
+  ],
 };
 
 export const misc = {
-  photos: placeholders(mediumFormat, "Misc"),
+  photos: photoSet("misc", [
+    "A bronze figure lying on its back on a plinth against a pale wall",
+    "A figure walking through thick haze among trees",
+    "A person in a long red dress with a flowing train beside a white church with a blue dome",
+    "White cliffside houses seen from above, beside a blue steel stair and a table and chairs",
+    "A dim bar, figures silhouetted against a bright doorway",
+    "A white domed church seen through a shaded archway",
+    "A red sand beach seen from above, with sunbathers and white surf",
+    "A garden seen through slatted blinds",
+    "A turquoise pool between the white colonnades of a modernist building",
+    "Hands setting down plates of salad over sliced tomatoes",
+    "Strings of lights and paper lanterns among plants in a restaurant",
+    "A church with twin bell towers above a square, a blurred bus passing in front",
+    "A cyanotype: a grid of small blue images printed on paper",
+  ]),
 };
 
 /** Site sections; labels come from the dictionary (src/lib/i18n.ts). */
 export const navigation = [
   { href: "/art", key: "art" },
-  { href: "/concerts", key: "concerts" },
+  { href: "/music", key: "music" },
   { href: "/misc", key: "misc" },
   { href: "/cv", key: "cv" },
 ] as const;

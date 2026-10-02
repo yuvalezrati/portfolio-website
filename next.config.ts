@@ -12,6 +12,10 @@ const bonjourName = `${os.hostname().replace(/\.local$/, "").toLowerCase()}.loca
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: [...lanAddresses, bonjourName],
+  // The Concerts page became Music (concerts and musicians).
+  async redirects() {
+    return [{ source: "/concerts", destination: "/music", permanent: true }];
+  },
   images: {
     // Photography: serve modern formats at a higher quality than Next's default 75.
     formats: ["image/avif", "image/webp"],

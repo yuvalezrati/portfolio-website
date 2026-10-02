@@ -28,12 +28,13 @@ export const splitLocalePath = (pathname: string): { lang: Locale; path: string 
 const en = {
   name: "Yuval Ezrati",
   description: "Photography by Yuval Ezrati.",
-  nav: { art: "Art", concerts: "Concerts", misc: "Misc", cv: "CV" },
+  nav: { art: "Art", music: "Music", misc: "Misc", cv: "CV" },
   forward: "→",
   back: "←",
   home: {
     selected: "Selected projects",
     also: "Also",
+    musicNote: "concerts & musicians",
     filmNote: "medium-format film",
     aboutNote: "about",
   },
@@ -43,8 +44,8 @@ const en = {
     count: (n: number) => `${n} projects`,
     sections: { Installation: "Installation", Book: "Book", Video: "Video" } as Record<string, string>,
   },
-  misc: { description: "Other medium-format analog work." },
   sequence: { pause: "Pause", play: "Play" },
+  music: { concerts: "Concerts", musicians: "Musicians" },
   footer: { rewind: "Rewind" },
   notFound: {
     frame: "Frame 404",
@@ -66,12 +67,13 @@ export type Dictionary = typeof en;
 const he: Dictionary = {
   name: "יובל עזרתי",
   description: "צילום — יובל עזרתי.",
-  nav: { art: "אמנות", concerts: "הופעות", misc: "שונות", cv: "קורות חיים" },
+  nav: { art: "אמנות", music: "מוזיקה", misc: "שונות", cv: "קורות חיים" },
   forward: "←",
   back: "→",
   home: {
     selected: "פרויקטים נבחרים",
     also: "עוד",
+    musicNote: "הופעות ומוזיקאים",
     filmNote: "פילם בפורמט בינוני",
     aboutNote: "אודות",
   },
@@ -81,8 +83,8 @@ const he: Dictionary = {
     count: (n) => `${n} פרויקטים`,
     sections: { Installation: "הצבה", Book: "ספר", Video: "וידאו" },
   },
-  misc: { description: "עבודות אנלוגיות נוספות בפורמט בינוני." },
   sequence: { pause: "השהיה", play: "הפעלה" },
+  music: { concerts: "הופעות", musicians: "מוזיקאים" },
   footer: { rewind: "גלגול אחורה" },
   notFound: {
     frame: "פריים 404",

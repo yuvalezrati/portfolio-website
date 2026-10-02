@@ -13,13 +13,9 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/misc">): P
 export default async function MiscPage({ params }: PageProps<"/[lang]/misc">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  const t = getDictionary(lang);
-
   return (
     <>
-      <PageIntro title={t.nav.misc}>
-        <p>{t.misc.description}</p>
-      </PageIntro>
+      <PageIntro title={getDictionary(lang).nav.misc} />
       <Gallery photos={misc.photos} lang={lang} />
     </>
   );

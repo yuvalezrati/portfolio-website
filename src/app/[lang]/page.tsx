@@ -1,6 +1,5 @@
 import Link from "next/link";
 import ProjectShowcase from "@/components/ProjectShowcase";
-import { concerts } from "@/lib/content";
 import { getDictionary, isLocale, localePath } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 
@@ -22,7 +21,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <h2 className="mb-6 font-mono text-xs uppercase tracking-wider text-ink/50">{t.home.also}</h2>
         <ul className="space-y-3">
           {[
-            { href: "/concerts", label: t.nav.concerts, note: concerts.years },
+            { href: "/music", label: t.nav.music, note: t.home.musicNote },
             { href: "/misc", label: t.nav.misc, note: t.home.filmNote },
             { href: "/cv", label: t.nav.cv, note: t.home.aboutNote },
           ].map(({ href, label, note }) => (
