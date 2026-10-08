@@ -9,7 +9,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export default function ProjectShowcase({ lang }: { lang: Locale }) {
   const t = getDictionary(lang);
   return (
-    <ol className="showcase space-y-32 sm:space-y-48">
+    <ol className="space-y-32 sm:space-y-48">
       {artProjects.map((project, i) => {
         const { slug, year, sections } = project;
         const { title } = projectText(project, lang);
