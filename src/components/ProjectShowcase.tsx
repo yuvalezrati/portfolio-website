@@ -43,7 +43,8 @@ export default function ProjectShowcase({ lang }: { lang: Locale }) {
               <span className="block sm:col-span-5">
                 <span className="font-mono text-xs text-mark">{pad(i + 1)}</span>
                 <span className="mt-2 block w-fit">
-                  <span className="block font-display text-5xl leading-[0.95] tracking-tight sm:text-7xl">
+                  {/* The title doesn't move; it turns red on hover (or keyboard focus) to show the choice. */}
+                  <span className="block font-display text-5xl leading-[0.95] tracking-tight transition-colors duration-300 group-hover:text-mark group-focus-visible:text-mark sm:text-7xl">
                     {title}
                   </span>
                 </span>
