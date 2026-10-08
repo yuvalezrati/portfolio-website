@@ -42,8 +42,8 @@ export default function ProjectShowcase({ lang }: { lang: Locale }) {
 
               <span className="block sm:col-span-5">
                 <span className="font-mono text-xs text-mark">{pad(i + 1)}</span>
-                <span className="drift mt-2 block w-fit">
-                  <span className="block font-display text-5xl leading-[0.95] tracking-tight transition-[translate] duration-500 ease-out group-hover:translate-x-2 rtl:group-hover:-translate-x-2 motion-reduce:transition-none sm:text-7xl">
+                <span className="mt-2 block w-fit">
+                  <span className="block font-display text-5xl leading-[0.95] tracking-tight sm:text-7xl">
                     {title}
                   </span>
                 </span>
@@ -70,7 +70,7 @@ export default function ProjectShowcase({ lang }: { lang: Locale }) {
                 )}
 
                 <span className="mt-6 inline-flex items-baseline gap-2 font-mono text-xs uppercase tracking-wider">
-                  <span className="text-mark transition-[translate] duration-500 ease-out group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+                  <span className="text-mark">
                     {t.forward}
                   </span>
                   {t.project.view}

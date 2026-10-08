@@ -76,35 +76,15 @@ body {
   to { transform: scaleX(1); }
 }
 
-/* Scroll-driven motion: project titles drift sideways as they pass, and the progress line
-   fills. Browsers without scroll timelines simply show everything still. */
+/* Scroll-driven motion: the progress line fills as you scroll. Browsers without scroll
+   timelines simply don't show it. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .scroll-progress {
       animation: progress linear both;
       animation-timeline: scroll(root);
     }
-
-    .drift {
-      animation: drift linear both;
-      animation-timeline: view();
-    }
-
-    /* Mirrored for right-to-left (Hebrew). */
-    [dir="rtl"] .drift {
-      animation-name: drift-rtl;
-    }
   }
-}
-
-@keyframes drift {
-  from { translate: 4vw 0; }
-  to { translate: -2vw 0; }
-}
-
-@keyframes drift-rtl {
-  from { translate: -4vw 0; }
-  to { translate: 2vw 0; }
 }
 
 /* Project rule (CLAUDE.md): all text is aligned to the start of the line: left in English,
